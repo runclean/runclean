@@ -3,98 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>달려라청소 편집기</title>
+<title>달려라청소 편집기 PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--b:#1565C0;--g:#00897B;--bg:#0D1A2B;--panel:#0F1C2E;--border:rgba(66,165,245,.18);--txt:#C8E0F4;--sec:#00BFA5;}
+:root{--b:#1565C0;--bg:#0B1624;--panel:#0D1A2B;--border:rgba(66,165,245,.18);--txt:#C8E0F4;--sec:#00BFA5;--red:#EF5350;}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
-
-/* TOPBAR */
-.topbar{background:linear-gradient(90deg,#091525,#162540);border-bottom:2px solid var(--b);height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:10px;}
-.tlogo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:16px;color:#42A5F5;white-space:nowrap;}
+.topbar{background:linear-gradient(90deg,#071220,#122035);border-bottom:2px solid var(--b);height:54px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:8px;}
+.tlogo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:14px;color:#42A5F5;white-space:nowrap;}
 .tlogo em{color:#00E5A0;font-style:normal;}
-.tr{display:flex;gap:8px;align-items:center;flex-shrink:0;}
-.btn{padding:8px 16px;border-radius:8px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .18s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
-.btn-ghost{background:transparent;border:1.5px solid rgba(66,165,245,.4);color:#7FC8F8;}
+.tr{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+.btn{padding:7px 13px;border-radius:7px;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all .18s;display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.btn-ghost{background:transparent;border:1.5px solid rgba(66,165,245,.35);color:#7FC8F8;}
 .btn-ghost:hover{border-color:#42A5F5;color:#42A5F5;}
-.btn-dl{background:linear-gradient(135deg,#1565C0,#00897B);color:#fff;font-size:14px;padding:10px 22px;border-radius:9px;box-shadow:0 4px 16px rgba(21,101,192,.4);}
-.btn-dl:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(21,101,192,.55);}
-
-/* LAYOUT */
+.btn-dl{background:linear-gradient(135deg,#1565C0,#00897B);color:#fff;font-size:13px;padding:9px 18px;border-radius:8px;box-shadow:0 4px 14px rgba(21,101,192,.4);}
+.btn-dl:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(21,101,192,.55);}
 .wrap{display:flex;flex:1;overflow:hidden;}
-
-/* LEFT */
-.left{width:360px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.left{width:370px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
 .tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--border);flex-shrink:0;}
-.tab{flex:1;min-width:0;padding:10px 2px;text-align:center;font-size:11px;font-weight:700;cursor:pointer;color:#4A6A8A;border-bottom:2px solid transparent;transition:all .18s;letter-spacing:-.3px;}
+.tab{flex:1;min-width:0;padding:8px 1px;text-align:center;font-size:10px;font-weight:700;cursor:pointer;color:#4A6A8A;border-bottom:2px solid transparent;transition:all .18s;}
 .tab.on{color:#42A5F5;border-bottom-color:#42A5F5;background:rgba(66,165,245,.06);}
 .tab:hover:not(.on){color:#8AB8D8;}
-.scroll{flex:1;overflow-y:auto;padding:16px;}
+.scroll{flex:1;overflow-y:auto;padding:13px;}
 .scroll::-webkit-scrollbar{width:4px;}
-.scroll::-webkit-scrollbar-thumb{background:rgba(66,165,245,.22);border-radius:2px;}
-
-/* FORM ELEMENTS */
-.sec{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--sec);text-transform:uppercase;margin:16px 0 8px;}
+.scroll::-webkit-scrollbar-thumb{background:rgba(66,165,245,.2);border-radius:2px;}
+.sec{font-size:9.5px;font-weight:700;letter-spacing:2px;color:var(--sec);text-transform:uppercase;margin:13px 0 6px;}
 .sec:first-child{margin-top:0;}
-.f{margin-bottom:10px;}
-.f label{display:block;font-size:12px;color:#5A7A9A;margin-bottom:4px;font-weight:600;}
-.f input,.f textarea,.f select{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:7px;color:var(--txt);font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:8px 10px;transition:border-color .18s;resize:vertical;}
+.f{margin-bottom:8px;}
+.f label{display:block;font-size:11.5px;color:#5A7A9A;margin-bottom:3px;font-weight:600;}
+.f input,.f textarea,.f select{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:6px;color:var(--txt);font-family:'Noto Sans KR',sans-serif;font-size:12.5px;padding:7px 9px;transition:border-color .18s;resize:vertical;}
 .f input:focus,.f textarea:focus,.f select:focus{outline:none;border-color:#42A5F5;background:rgba(66,165,245,.07);}
-.f textarea{min-height:56px;line-height:1.6;}
-.ce{background:rgba(255,255,255,.03);border:1px solid rgba(66,165,245,.14);border-radius:8px;padding:11px;margin-bottom:9px;}
-.ce .ct{font-size:11px;font-weight:700;color:#42A5F5;margin-bottom:9px;}
-.hr{height:1px;background:rgba(66,165,245,.1);margin:14px 0;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.f textarea{min-height:50px;line-height:1.6;}
+.f select{background-color:#0A1525;cursor:pointer;}
+.f input[type=range]{padding:0;height:18px;cursor:pointer;accent-color:#42A5F5;}
+.f input[type=number]{width:65px;}
+.f-row{display:flex;align-items:center;gap:7px;}
+.f-row label{flex:1;margin:0;}
+.f-row .val{font-size:12px;color:#42A5F5;font-weight:700;min-width:34px;text-align:right;}
+.ce{background:rgba(255,255,255,.03);border:1px solid rgba(66,165,245,.13);border-radius:7px;padding:10px;margin-bottom:7px;}
+.ce.hidden-item{opacity:.4;border-style:dashed;}
+.ce .ct{font-size:10.5px;font-weight:700;color:#42A5F5;margin-bottom:7px;display:flex;align-items:center;gap:5px;}
+.ce .ct-title{flex:1;}
+.toggle-btn{background:rgba(0,191,165,.15);border:1px solid rgba(0,191,165,.3);color:#00BFA5;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer;transition:all .15s;}
+.toggle-btn.off{background:rgba(80,80,80,.15);border-color:rgba(80,80,80,.3);color:#5A7A9A;}
+.hr{height:1px;background:rgba(66,165,245,.1);margin:11px 0;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
 .tc{display:none;}
 .tc.on{display:block;}
-
-/* UPLOAD */
-.upload-box{border:2px dashed rgba(66,165,245,.28);border-radius:9px;padding:14px;text-align:center;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;margin-bottom:9px;}
+.add-btn{width:100%;padding:9px;border:1.5px dashed rgba(0,191,165,.4);background:rgba(0,191,165,.05);border-radius:7px;color:#00BFA5;font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;margin-top:3px;}
+.add-btn:hover{border-color:#00BFA5;background:rgba(0,191,165,.12);}
+.sec-toggle-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid rgba(66,165,245,.13);border-radius:7px;padding:9px 12px;margin-bottom:6px;}
+.sec-toggle-label{font-size:12px;font-weight:700;color:#C8E0F4;}
+.sec-toggle-sub{font-size:10px;color:#5A7A9A;margin-top:2px;}
+.upload-box{border:2px dashed rgba(66,165,245,.25);border-radius:7px;padding:11px;text-align:center;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;margin-bottom:7px;}
 .upload-box:hover{border-color:#42A5F5;background:rgba(66,165,245,.05);}
 .upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
-.upload-box .ui{font-size:24px;margin-bottom:5px;}
-.upload-box .ut{font-size:12px;color:#5A7A9A;line-height:1.5;}
-.upload-box img.preview{width:100%;border-radius:6px;margin-top:8px;display:none;max-height:100px;object-fit:cover;}
-.g2-upload{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-
-/* NOTE BOX */
-.note{background:rgba(255,193,7,.07);border:1px solid rgba(255,193,7,.25);border-radius:8px;padding:10px 13px;font-size:12px;color:#FFD54F;line-height:1.6;margin-bottom:12px;}
-.note strong{font-weight:700;}
-
-/* RIGHT */
+.upload-box .ui{font-size:20px;margin-bottom:3px;}
+.upload-box .ut{font-size:11px;color:#5A7A9A;line-height:1.4;}
+.upload-box img.preview{width:100%;border-radius:5px;margin-top:6px;display:none;max-height:80px;object-fit:cover;}
+.g3-up{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.note{background:rgba(255,193,7,.06);border:1px solid rgba(255,193,7,.22);border-radius:7px;padding:8px 11px;font-size:11px;color:#FFD54F;line-height:1.6;margin-bottom:9px;}
+.range-labels{display:flex;justify-content:space-between;font-size:10px;color:#4A6A8A;margin-top:2px;}
 .right{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.pbar{background:var(--panel);border-bottom:1px solid var(--border);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.pbar-label{font-size:12px;color:#5A7A9A;font-weight:700;letter-spacing:1px;}
+.pbar{background:var(--panel);border-bottom:1px solid var(--border);padding:7px 15px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.pbar-label{font-size:11px;color:#5A7A9A;font-weight:700;letter-spacing:1px;}
 #iframe{flex:1;border:none;background:#fff;}
-
-/* TOAST */
-.toast{position:fixed;bottom:28px;right:28px;background:#00BFA5;color:#003D35;padding:12px 24px;border-radius:11px;font-weight:700;font-size:14px;z-index:9999;transform:translateY(60px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.toast{position:fixed;bottom:22px;right:22px;background:#00BFA5;color:#003D35;padding:10px 20px;border-radius:10px;font-weight:700;font-size:13px;z-index:9999;transform:translateY(60px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
 .toast.show{transform:translateY(0);opacity:1;}
+.mini-up{border:1.5px dashed rgba(66,165,245,.2);border-radius:5px;padding:7px;text-align:center;cursor:pointer;position:relative;overflow:hidden;margin-top:5px;background:rgba(255,255,255,.02);}
+.mini-up input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
+.mini-up .mi{font-size:15px;}
+.mini-up .mt{font-size:10px;color:#5A7A9A;}
+.mini-up img.mpv{width:100%;max-height:55px;object-fit:cover;border-radius:4px;margin-top:4px;display:none;}
 </style>
 </head>
 <body>
-
 <div class="topbar">
-  <div class="tlogo">🧹 달려라청소 <em>EDITOR</em></div>
+  <div class="tlogo">🧹 달려라청소 <em>EDITOR PRO</em></div>
   <div class="tr">
     <button class="btn btn-ghost" onclick="if(confirm('초기화할까요?'))location.reload()">↺ 초기화</button>
-    <button class="btn btn-ghost" onclick="updatePreview()">▶ 미리보기</button>
+    <button class="btn btn-ghost" onclick="updatePreview()">▶ 새로고침</button>
     <button class="btn btn-dl" onclick="downloadFile()">⬇ index.html 다운로드</button>
   </div>
 </div>
-
 <div class="wrap">
 <div class="left">
   <div class="tabs">
-    <div class="tab on"  onclick="sw(0)">🏠기본</div>
-    <div class="tab"     onclick="sw(1)">⭐특징</div>
-    <div class="tab"     onclick="sw(2)">🗂서비스</div>
-    <div class="tab"     onclick="sw(3)">💰가격</div>
-    <div class="tab"     onclick="sw(4)">💬후기</div>
-    <div class="tab"     onclick="sw(5)">❓FAQ</div>
-    <div class="tab"     onclick="sw(6)">🖼사진</div>
-    <div class="tab"     onclick="sw(7)">🔗링크</div>
+    <div class="tab on" onclick="sw(0)">🏠기본</div>
+    <div class="tab" onclick="sw(1)">⭐특징</div>
+    <div class="tab" onclick="sw(2)">🗂서비스</div>
+    <div class="tab" onclick="sw(3)">💰가격</div>
+    <div class="tab" onclick="sw(4)">💬후기</div>
+    <div class="tab" onclick="sw(5)">❓FAQ</div>
+    <div class="tab" onclick="sw(6)">🖼사진</div>
+    <div class="tab" onclick="sw(7)">🔗링크</div>
+    <div class="tab" onclick="sw(8)">🔘섹션</div>
   </div>
   <div class="scroll">
 
@@ -105,21 +108,49 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;heigh
     <div class="f"><label>태그라인 (히어로 뱃지)</label><input id="tagline" value="정기청소 전문 · 강남·서초·송파 전지역 출동" oninput="live()"></div>
     <div class="f"><label>전화번호</label><input id="phone" value="010-0000-0000" oninput="live()"></div>
     <div class="f"><label>운영시간</label><input id="hours" value="매일 09:00~20:00 (점심 12~13시)" oninput="live()"></div>
-    <div class="f"><label>최상단 알림바 문구</label><input id="noticeBar" value="📞 무료견적 전화 010-0000-0000 | 매일 09:00~20:00 운영" oninput="live()"></div>
+    <div class="f"><label>최상단 알림바</label><input id="noticeBar" value="📞 무료견적 전화 010-0000-0000 | 매일 09:00~20:00 운영" oninput="live()"></div>
     <div class="hr"></div>
     <div class="sec">히어로 문구</div>
-    <div class="f"><label>메인 제목 첫째줄</label><input id="heroTitle1" value="깨끗함이 달려옵니다" oninput="live()"></div>
-    <div class="f"><label>메인 제목 둘째줄 (파란 강조)</label><input id="heroTitle2" value="빠르고, 꼼꼼하게!" oninput="live()"></div>
-    <div class="f"><label>서브 문구 (줄바꿈 가능)</label><textarea id="heroSub" oninput="live()">사무실·병원·입주청소 전문
+    <div class="f"><label>메인 제목 줄1</label><input id="heroTitle1" value="깨끗함이 달려옵니다" oninput="live()"></div>
+    <div class="f"><label>메인 제목 줄2 (파란 강조)</label><input id="heroTitle2" value="빠르고, 꼼꼼하게!" oninput="live()"></div>
+    <div class="f"><label>서브 문구</label><textarea id="heroSub" oninput="live()">사무실·병원·입주청소 전문
 합리적인 가격, 투명한 견적, 숨은 비용 없습니다</textarea></div>
-    <div class="f"><label>버튼1 텍스트</label><input id="btn1" value="무료 견적 받기" oninput="live()"></div>
-    <div class="f"><label>버튼2 텍스트</label><input id="btn2" value="카카오 상담하기" oninput="live()"></div>
+    <div class="f">
+      <div class="f-row"><label>서브 문구 글씨 크기</label><span class="val" id="lHS">18px</span></div>
+      <input type="range" id="slHS" min="13" max="24" value="18" oninput="fv(this,'lHS');live()">
+    </div>
+    <div class="f"><label>버튼1</label><input id="btn1" value="무료 견적 받기" oninput="live()"></div>
+    <div class="f"><label>버튼2</label><input id="btn2" value="카카오 상담하기" oninput="live()"></div>
     <div class="hr"></div>
-    <div class="sec">신뢰 숫자 4개</div>
-    <div class="ce"><div class="ct">숫자 1</div><div class="g2"><div class="f"><label>숫자</label><input id="s1n" value="1,200+" oninput="live()"></div><div class="f"><label>설명</label><input id="s1l" value="누적 청소 건수" oninput="live()"></div></div></div>
-    <div class="ce"><div class="ct">숫자 2</div><div class="g2"><div class="f"><label>숫자</label><input id="s2n" value="98%" oninput="live()"></div><div class="f"><label>설명</label><input id="s2l" value="고객 재이용률" oninput="live()"></div></div></div>
-    <div class="ce"><div class="ct">숫자 3</div><div class="g2"><div class="f"><label>숫자</label><input id="s3n" value="4.9★" oninput="live()"></div><div class="f"><label>설명</label><input id="s3l" value="평균 만족도" oninput="live()"></div></div></div>
-    <div class="ce"><div class="ct">숫자 4</div><div class="g2"><div class="f"><label>숫자</label><input id="s4n" value="5년+" oninput="live()"></div><div class="f"><label>설명</label><input id="s4l" value="서비스 경력" oninput="live()"></div></div></div>
+    <div class="sec">신뢰 숫자</div>
+    <div id="stats-ed"></div>
+    <button class="add-btn" onclick="addItem('stats',{num:'숫자',label:'설명',shown:true})">+ 숫자 추가</button>
+    <div class="hr"></div>
+    <div class="sec">전체 설정</div>
+    <div class="f">
+      <div class="f-row"><label>전체 기본 글씨 크기</label><span class="val" id="lBs">16px</span></div>
+      <input type="range" id="slBs" min="13" max="20" value="16" oninput="fv(this,'lBs');live()">
+    </div>
+    <div class="f">
+      <div class="f-row"><label>섹션 제목 크기 (최대)</label><span class="val" id="lH2">44px</span></div>
+      <input type="range" id="slH2" min="22" max="56" value="44" oninput="fv(this,'lH2');live()">
+    </div>
+    <div class="f">
+      <div class="f-row"><label>섹션 설명 글씨</label><span class="val" id="lSS">17px</span></div>
+      <input type="range" id="slSS" min="13" max="22" value="17" oninput="fv(this,'lSS');live()">
+    </div>
+    <div class="f"><label>포인트 컬러 (파란색)</label>
+      <div style="display:flex;gap:7px;align-items:center">
+        <input type="color" id="cMain" value="#1976D2" oninput="syncC('cMain','cMainT');live()" style="width:34px;height:30px;border:none;border-radius:5px;cursor:pointer;background:transparent;padding:2px;">
+        <input id="cMainT" value="#1976D2" oninput="syncCT('cMainT','cMain')" style="flex:1">
+      </div>
+    </div>
+    <div class="f"><label>강조 컬러 (초록색)</label>
+      <div style="display:flex;gap:7px;align-items:center">
+        <input type="color" id="cAcc" value="#00BFA5" oninput="syncC('cAcc','cAccT');live()" style="width:34px;height:30px;border:none;border-radius:5px;cursor:pointer;background:transparent;padding:2px;">
+        <input id="cAccT" value="#00BFA5" oninput="syncCT('cAccT','cAcc')" style="flex:1">
+      </div>
+    </div>
     <div class="hr"></div>
     <div class="sec">푸터</div>
     <div class="f"><label>카피라이트</label><input id="footerCopy" value="© 2025 달려라청소. All rights reserved." oninput="live()"></div>
@@ -127,54 +158,42 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;heigh
 
   <!-- 1: 특징 -->
   <div class="tc" id="tc1">
-    <div class="sec">선택 이유 3가지</div>
-    <div class="ce"><div class="ct">이유 1</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="fi1" value="⚡" oninput="live()"></div><div class="f"><label>제목</label><input id="ft1" value="당일·익일 출동" oninput="live()"></div></div>
-      <div class="f"><label>설명</label><textarea id="fd1" oninput="live()">예약 즉시 배정, 긴급 청소도 빠르게 해결해드려요.</textarea></div>
+    <div class="sec">선택 이유 카드</div>
+    <div class="note" style="margin-bottom:8px">💡 홈페이지 위치: 상단 첫 번째 본문 섹션 (선택이유 카드 3개)</div>
+    <div id="feat-ed"></div>
+    <button class="add-btn" onclick="addItem('feats',{icon:'✅',title:'새 특징',desc:'설명을 입력하세요.',shown:true})">+ 특징 추가</button>
+    <div class="hr"></div>
+    <div class="sec">카드 글씨 크기</div>
+    <div class="f">
+      <div class="f-row"><label>카드 제목 크기</label><span class="val" id="lFT">20px</span></div>
+      <input type="range" id="slFT" min="14" max="28" value="20" oninput="fv(this,'lFT');live()">
     </div>
-    <div class="ce"><div class="ct">이유 2</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="fi2" value="🔍" oninput="live()"></div><div class="f"><label>제목</label><input id="ft2" value="꼼꼼한 품질관리" oninput="live()"></div></div>
-      <div class="f"><label>설명</label><textarea id="fd2" oninput="live()">청소 후 체크리스트 확인, 만족 못하면 재청소 무료.</textarea></div>
-    </div>
-    <div class="ce"><div class="ct">이유 3</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="fi3" value="💰" oninput="live()"></div><div class="f"><label>제목</label><input id="ft3" value="투명한 가격" oninput="live()"></div></div>
-      <div class="f"><label>설명</label><textarea id="fd3" oninput="live()">방문 전 확정 견적, 추가 비용 절대 없습니다.</textarea></div>
+    <div class="f">
+      <div class="f-row"><label>카드 설명 크기</label><span class="val" id="lFD">15px</span></div>
+      <input type="range" id="slFD" min="12" max="20" value="15" oninput="fv(this,'lFD');live()">
     </div>
     <div class="hr"></div>
-    <div class="sec">진행 프로세스 4단계</div>
-    <div class="ce"><div class="ct">STEP 1</div><div class="f"><label>제목</label><input id="p1t" value="상담 &amp; 견적" oninput="live()"></div><div class="f"><label>설명</label><input id="p1d" value="카톡·구글폼 접수 → 당일 견적 안내" oninput="live()"></div></div>
-    <div class="ce"><div class="ct">STEP 2</div><div class="f"><label>제목</label><input id="p2t" value="일정 확정" oninput="live()"></div><div class="f"><label>설명</label><input id="p2d" value="원하는 날짜·시간 선택, 전담 매니저 배정" oninput="live()"></div></div>
-    <div class="ce"><div class="ct">STEP 3</div><div class="f"><label>제목</label><input id="p3t" value="청소 진행" oninput="live()"></div><div class="f"><label>설명</label><input id="p3d" value="체크리스트 기반 꼼꼼 청소 진행" oninput="live()"></div></div>
-    <div class="ce"><div class="ct">STEP 4</div><div class="f"><label>제목</label><input id="p4t" value="완료 보고" oninput="live()"></div><div class="f"><label>설명</label><input id="p4d" value="청소 전후 사진 카톡 전송, 만족 확인" oninput="live()"></div></div>
+    <div class="sec">진행 프로세스</div>
+    <div class="note" style="margin-bottom:8px">💡 홈페이지 위치: 선택이유 카드 아래 단계별 안내 (번호 원형)</div>
+    <div id="proc-ed"></div>
+    <button class="add-btn" onclick="addItem('procs',{title:'새 단계',desc:'설명을 입력하세요.',shown:true})">+ 단계 추가</button>
   </div>
 
   <!-- 2: 서비스 -->
   <div class="tc" id="tc2">
-    <div class="sec">서비스 5개</div>
-    <div class="ce"><div class="ct">서비스 1</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="sv1i" value="🏢" oninput="live()"></div><div class="f"><label>이름</label><input id="sv1n" value="사무실 정기청소" oninput="live()"></div></div>
-      <div class="f"><label>태그</label><input id="sv1g" value="주 1~3회 정기계약" oninput="live()"></div>
-      <div class="f"><label>설명</label><textarea id="sv1d" oninput="live()">맞춤형 정기계약으로 항상 쾌적한 사무환경을 유지하세요. 주 1~3회 빈도 선택 가능.</textarea></div>
+    <div class="sec">서비스 카드</div>
+    <div class="note" style="margin-bottom:8px">💡 홈페이지 위치: 선택이유 섹션 바로 아래 (제공 서비스 카드들)</div>
+    <div id="svc-ed"></div>
+    <button class="add-btn" onclick="addItem('svcs',{icon:'🧹',name:'새 서비스',tag:'태그',desc:'설명을 입력하세요.',highlight:false,shown:true})">+ 서비스 추가</button>
+    <div class="hr"></div>
+    <div class="sec">카드 글씨 크기</div>
+    <div class="f">
+      <div class="f-row"><label>서비스 이름 크기</label><span class="val" id="lSN">17px</span></div>
+      <input type="range" id="slSN" min="13" max="24" value="17" oninput="fv(this,'lSN');live()">
     </div>
-    <div class="ce"><div class="ct">서비스 2</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="sv2i" value="🏥" oninput="live()"></div><div class="f"><label>이름</label><input id="sv2n" value="병원 정기청소" oninput="live()"></div></div>
-      <div class="f"><label>태그</label><input id="sv2g" value="의료기관 위생관리" oninput="live()"></div>
-      <div class="f"><label>설명</label><textarea id="sv2d" oninput="live()">병원·의원·치과 등 의료시설 특화 정기청소. 위생 기준에 맞춘 꼼꼼한 관리.</textarea></div>
-    </div>
-    <div class="ce"><div class="ct">서비스 3</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="sv3i" value="✨" oninput="live()"></div><div class="f"><label>이름</label><input id="sv3n" value="사무실 대청소·왁스코팅" oninput="live()"></div></div>
-      <div class="f"><label>태그</label><input id="sv3g" value="바닥 왁스코팅 포함" oninput="live()"></div>
-      <div class="f"><label>설명</label><textarea id="sv3d" oninput="live()">연 1~2회 대청소와 바닥 왁스코팅으로 공간을 새것처럼! 광택 복원 전문.</textarea></div>
-    </div>
-    <div class="ce"><div class="ct">서비스 4</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="sv4i" value="📦" oninput="live()"></div><div class="f"><label>이름</label><input id="sv4n" value="입주청소" oninput="live()"></div></div>
-      <div class="f"><label>태그</label><input id="sv4g" value="입주 전 꼼꼼 청소" oninput="live()"></div>
-      <div class="f"><label>설명</label><textarea id="sv4d" oninput="live()">새 공간 입주 전 구석구석 완벽 청소. 평당 요금제로 투명하게.</textarea></div>
-    </div>
-    <div class="ce"><div class="ct">서비스 5 (강조 카드)</div>
-      <div class="g2"><div class="f"><label>아이콘</label><input id="sv5i" value="🪟" oninput="live()"></div><div class="f"><label>이름</label><input id="sv5n" value="유리창 청소" oninput="live()"></div></div>
-      <div class="f"><label>태그</label><input id="sv5g" value="퓨어워터 고가장비 사용" oninput="live()"></div>
-      <div class="f"><label>설명</label><textarea id="sv5d" oninput="live()">퓨어워터 전문 장비로 줄기 없이 완벽하게! 고층 외창도 안전하게 시공.</textarea></div>
+    <div class="f">
+      <div class="f-row"><label>서비스 설명 크기</label><span class="val" id="lSD">14px</span></div>
+      <input type="range" id="slSD" min="11" max="18" value="14" oninput="fv(this,'lSD');live()">
     </div>
   </div>
 
@@ -185,328 +204,572 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;heigh
     <div class="f"><label>섹션 설명</label><textarea id="prSub" oninput="live()">복잡한 견적 NO! 아래 기준 가격으로 미리 확인하세요. 정확한 견적은 무료로 문의해 주세요.</textarea></div>
     <div class="hr"></div>
     <div class="sec">🔵 정기청소 (월정액)</div>
-    <div class="ce"><div class="ct">주 1회 (인기)</div>
+    <div class="ce"><div class="ct"><span class="ct-title">주 1회 (인기)</span></div>
       <div class="f"><label>가격</label><input id="rg1p" value="200,000원" oninput="live()"></div>
       <div class="f"><label>단위</label><input id="rg1u" value="/ 월 (4회 방문)" oninput="live()"></div>
       <div class="f"><label>설명</label><input id="rg1d" value="사무실 기준 / 평수·범위에 따라 변동" oninput="live()"></div>
     </div>
-    <div class="ce"><div class="ct">주 2회</div>
+    <div class="ce"><div class="ct"><span class="ct-title">주 2회</span></div>
       <div class="f"><label>가격</label><input id="rg2p" value="문의" oninput="live()"></div>
       <div class="f"><label>단위</label><input id="rg2u" value="/ 월 (8회 방문)" oninput="live()"></div>
       <div class="f"><label>설명</label><input id="rg2d" value="맞춤 견적 제공" oninput="live()"></div>
     </div>
-    <div class="ce"><div class="ct">주 3회</div>
+    <div class="ce"><div class="ct"><span class="ct-title">주 3회</span></div>
       <div class="f"><label>가격</label><input id="rg3p" value="문의" oninput="live()"></div>
       <div class="f"><label>단위</label><input id="rg3u" value="/ 월 (12회 방문)" oninput="live()"></div>
       <div class="f"><label>설명</label><input id="rg3d" value="맞춤 견적 제공" oninput="live()"></div>
     </div>
     <div class="hr"></div>
     <div class="sec">🟢 대청소 (평당)</div>
-    <div class="ce"><div class="ct">대청소 기본</div>
+    <div class="ce"><div class="ct"><span class="ct-title">대청소 기본</span></div>
       <div class="f"><label>평당 요금</label><input id="dc1p" value="8,000원/평" oninput="live()"></div>
       <div class="f"><label>최소 평수</label><input id="dc1m" value="최소 10평~" oninput="live()"></div>
       <div class="f"><label>설명</label><input id="dc1d" value="바닥·벽면·창틀 전체 청소 포함" oninput="live()"></div>
     </div>
-    <div class="ce"><div class="ct">왁스코팅 추가</div>
-      <div class="f"><label>평당 추가요금</label><input id="dc2p" value="+5,000원/평" oninput="live()"></div>
+    <div class="ce"><div class="ct"><span class="ct-title">왁스코팅 추가</span></div>
+      <div class="f"><label>추가 요금</label><input id="dc2p" value="+5,000원/평" oninput="live()"></div>
       <div class="f"><label>조건</label><input id="dc2m" value="대청소 세트 할인" oninput="live()"></div>
       <div class="f"><label>설명</label><input id="dc2d" value="바닥 광택 복원" oninput="live()"></div>
     </div>
     <div class="hr"></div>
     <div class="sec">🟠 입주청소 (평당)</div>
-    <div class="ce"><div class="ct">입주청소</div>
+    <div class="ce"><div class="ct"><span class="ct-title">입주청소</span></div>
       <div class="f"><label>평당 요금</label><input id="mv1p" value="10,000원/평" oninput="live()"></div>
       <div class="f"><label>최소 평수</label><input id="mv1m" value="최소 10평~" oninput="live()"></div>
       <div class="f"><label>설명</label><input id="mv1d" value="전 구역 꼼꼼 청소, 입주 전 완벽 준비" oninput="live()"></div>
     </div>
     <div class="hr"></div>
     <div class="sec">🪟 유리창 청소</div>
-    <div class="ce"><div class="ct">유리창 청소</div>
+    <div class="ce"><div class="ct"><span class="ct-title">유리창 청소</span></div>
       <div class="f"><label>요금</label><input id="gl1p" value="문의" oninput="live()"></div>
       <div class="f"><label>조건</label><input id="gl1m" value="면적·층수 협의" oninput="live()"></div>
       <div class="f"><label>설명</label><input id="gl1d" value="퓨어워터 장비 사용, 줄기 없는 완벽 세척" oninput="live()"></div>
     </div>
     <div class="hr"></div>
-    <div class="sec">안내 메모</div>
     <div class="f"><label>가격 하단 안내문</label><textarea id="prNote" oninput="live()">※ 위 요금은 기준 가격이며, 실제 면적·청소 범위·접근성에 따라 달라질 수 있습니다. 정확한 견적은 무료로 문의해 주세요!</textarea></div>
+    <div class="hr"></div>
+    <div class="sec">가격 글씨 크기</div>
+    <div class="f">
+      <div class="f-row"><label>가격 숫자 크기</label><span class="val" id="lPN">28px</span></div>
+      <input type="range" id="slPN" min="18" max="40" value="28" oninput="fv(this,'lPN');live()">
+    </div>
   </div>
 
   <!-- 4: 후기 -->
   <div class="tc" id="tc4">
-    <div class="sec">고객 후기 3개</div>
-    <div class="ce"><div class="ct">후기 1</div>
-      <div class="g2"><div class="f"><label>별점 (1~5)</label><input id="r1s" value="5" type="number" min="1" max="5" oninput="live()"></div><div class="f"><label>이름·지역</label><input id="r1n" value="김○○ · 강남구" oninput="live()"></div></div>
-      <div class="f"><label>이용 서비스</label><input id="r1sv" value="사무실 정기청소" oninput="live()"></div>
-      <div class="f"><label>후기 내용</label><textarea id="r1t" oninput="live()">정말 꼼꼼하게 해주셨어요! 구석구석 깨끗하게 닦아주시고 화장실도 새것 같아졌네요. 다음 달에도 꼭 예약할게요 😊</textarea></div>
-    </div>
-    <div class="ce"><div class="ct">후기 2</div>
-      <div class="g2"><div class="f"><label>별점</label><input id="r2s" value="5" type="number" min="1" max="5" oninput="live()"></div><div class="f"><label>이름·지역</label><input id="r2n" value="이○○ · 서초구" oninput="live()"></div></div>
-      <div class="f"><label>이용 서비스</label><input id="r2sv" value="병원 정기청소" oninput="live()"></div>
-      <div class="f"><label>후기 내용</label><textarea id="r2t" oninput="live()">사무실이 이렇게 깨끗해진 적이 없었어요. 직원들도 다 만족해하고 공기가 달라진 것 같아요. 강력 추천합니다!</textarea></div>
-    </div>
-    <div class="ce"><div class="ct">후기 3</div>
-      <div class="g2"><div class="f"><label>별점</label><input id="r3s" value="5" type="number" min="1" max="5" oninput="live()"></div><div class="f"><label>이름·지역</label><input id="r3n" value="박○○ · 송파구" oninput="live()"></div></div>
-      <div class="f"><label>이용 서비스</label><input id="r3sv" value="입주청소" oninput="live()"></div>
-      <div class="f"><label>후기 내용</label><textarea id="r3t" oninput="live()">입주 전 청소를 부탁드렸는데 정말 깔끔하게 해주셨어요. 가격도 합리적이고 친절하셔서 정기계약 바로 맺었습니다!</textarea></div>
+    <div class="sec">고객 후기</div>
+    <div class="note" style="margin-bottom:8px">💡 홈페이지 위치: 가격표 아래 고객 후기 카드들</div>
+    <div id="rv-ed"></div>
+    <button class="add-btn" onclick="addItem('reviews',{stars:5,name:'고객명 · 지역',service:'서비스명',text:'후기 내용을 입력하세요.',shown:true})">+ 후기 추가</button>
+    <div class="hr"></div>
+    <div class="sec">후기 글씨 크기</div>
+    <div class="f">
+      <div class="f-row"><label>후기 내용 크기</label><span class="val" id="lRV">15px</span></div>
+      <input type="range" id="slRV" min="12" max="20" value="15" oninput="fv(this,'lRV');live()">
     </div>
   </div>
 
   <!-- 5: FAQ -->
   <div class="tc" id="tc5">
-    <div class="sec">FAQ 5개</div>
-    <div class="ce"><div class="ct">Q1</div><div class="f"><label>질문</label><input id="q1q" value="청소 도구는 직접 가져오나요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q1a" oninput="live()">네, 전문 청소 장비와 친환경 세제를 모두 지참합니다. 고객님은 별도로 준비하실 필요가 없어요.</textarea></div></div>
-    <div class="ce"><div class="ct">Q2</div><div class="f"><label>질문</label><input id="q2q" value="예약 당일 취소·변경이 가능한가요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q2a" oninput="live()">서비스 24시간 전까지 무료 취소·변경 가능합니다. 당일 취소는 취소 수수료가 발생할 수 있어요.</textarea></div></div>
-    <div class="ce"><div class="ct">Q3</div><div class="f"><label>질문</label><input id="q3q" value="정기계약 시 할인이 되나요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q3a" oninput="live()">정기계약(주 1~3회)을 맺으시면 회당 요금에서 5~15% 할인 혜택을 드립니다.</textarea></div></div>
-    <div class="ce"><div class="ct">Q4</div><div class="f"><label>질문</label><input id="q4q" value="청소 후 만족하지 못하면요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q4a" oninput="live()">청소 완료 후 24시간 이내 불만족 부분 말씀해 주시면 재청소 서비스를 무료로 제공해드립니다.</textarea></div></div>
-    <div class="ce"><div class="ct">Q5</div><div class="f"><label>질문</label><input id="q5q" value="유리창 청소 퓨어워터가 뭔가요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q5a" oninput="live()">퓨어워터(순수 정제수) 장비로 세제 없이 물만으로 세척해 줄기·물자국 없이 완벽하게 닦이는 전문 장비입니다.</textarea></div></div>
+    <div class="sec">FAQ</div>
+    <div class="note" style="margin-bottom:8px">💡 홈페이지 위치: 후기 아래 자주 묻는 질문 (클릭하면 답변 펼쳐짐)</div>
+    <div id="faq-ed"></div>
+    <button class="add-btn" onclick="addItem('faqs',{q:'질문을 입력하세요',a:'답변을 입력하세요.',shown:true})">+ FAQ 추가</button>
+    <div class="hr"></div>
+    <div class="sec">FAQ 글씨 크기</div>
+    <div class="f">
+      <div class="f-row"><label>질문 글씨 크기</label><span class="val" id="lFQ">16px</span></div>
+      <input type="range" id="slFQ" min="13" max="22" value="16" oninput="fv(this,'lFQ');live()">
+    </div>
+    <div class="f">
+      <div class="f-row"><label>답변 글씨 크기</label><span class="val" id="lFA">15px</span></div>
+      <input type="range" id="slFA" min="12" max="20" value="15" oninput="fv(this,'lFA');live()">
+    </div>
   </div>
 
   <!-- 6: 사진 -->
   <div class="tc" id="tc6">
-    <div class="note">
-      <strong>📌 사진 사용 방법 (2가지)</strong><br><br>
-      <strong>방법 A — 편집기에서 직접 업로드</strong><br>
-      아래에서 사진 업로드 → index.html 다운로드<br>
-      사진이 코드 안에 포함돼요 (파일 커짐)<br><br>
-      <strong>방법 B — 깃허브 images/ 폴더 (권장)</strong><br>
-      깃허브에 images/ 폴더 만들고 사진 업로드<br>
-      링크 탭에서 파일명만 입력하면 끝!<br>
-      예: hero.jpg → images/hero.jpg
-    </div>
-    <div class="sec">히어로 배경 이미지</div>
+
+    <!-- 히어로 배경 -->
+    <div class="sec">① 첫 화면 배경 사진 (히어로)</div>
+    <div class="note">💡 홈페이지 맨 위 전체 화면을 채우는 큰 배경 사진이에요.<br>글씨 위에 깔리는 배경입니다.</div>
     <div class="upload-box" onclick="document.getElementById('uph').click()">
-      <div class="ui">🖼️</div>
-      <div class="ut">클릭해서 배경 이미지 업로드</div>
-      <input type="file" id="uph" accept="image/*" onchange="upImg('uph','pvh','heroImg')">
+      <div class="ui">🖼️</div><div class="ut">클릭해서 히어로 배경 업로드</div>
+      <input type="file" id="uph" accept="image/*" onchange="upImg('uph','pvh','hero')">
       <img class="preview" id="pvh">
     </div>
     <div class="ce">
-      <div class="ct">📐 사진 위치 · 크기 · 밝기 조절</div>
+      <div class="ct"><span class="ct-title">📐 위치 · 크기 · 밝기 조절</span></div>
       <div class="f">
-        <label>좌우 위치 &nbsp;<span id="heroXval" style="color:#42A5F5;font-weight:700;">50%</span></label>
-        <input type="range" id="heroX" min="0" max="100" value="50" oninput="document.getElementById('heroXval').textContent=this.value+'%';live()" style="width:100%;accent-color:#42A5F5;margin-top:4px;">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:#4A6A8A;margin-top:2px;"><span>← 왼쪽</span><span>오른쪽 →</span></div>
+        <div class="f-row"><label>좌우 위치 (사진 어느 부분을 중앙에 볼지)</label><span class="val" id="vX">50%</span></div>
+        <input type="range" id="heroX" min="0" max="100" value="50" oninput="document.getElementById('vX').textContent=this.value+'%';live()">
+        <div class="range-labels"><span>← 왼쪽 부분 보기</span><span>오른쪽 부분 →</span></div>
       </div>
       <div class="f">
-        <label>상하 위치 &nbsp;<span id="heroYval" style="color:#42A5F5;font-weight:700;">50%</span></label>
-        <input type="range" id="heroY" min="0" max="100" value="50" oninput="document.getElementById('heroYval').textContent=this.value+'%';live()" style="width:100%;accent-color:#42A5F5;margin-top:4px;">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:#4A6A8A;margin-top:2px;"><span>↑ 위</span><span>아래 ↓</span></div>
+        <div class="f-row"><label>상하 위치 (위/아래 어느 부분을 볼지)</label><span class="val" id="vY">50%</span></div>
+        <input type="range" id="heroY" min="0" max="100" value="50" oninput="document.getElementById('vY').textContent=this.value+'%';live()">
+        <div class="range-labels"><span>↑ 위쪽 보기</span><span>아래쪽 보기 ↓</span></div>
       </div>
-      <div class="f">
-        <label>사진 크기</label>
-        <select id="heroSize" onchange="live()" style="width:100%;background:#0D1820;border:1px solid rgba(66,165,245,.18);border-radius:7px;color:#C8E0F4;font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:8px 10px;margin-top:4px;">
-          <option value="cover">꽉 채우기 (기본)</option>
-          <option value="contain">전체 보이기 (여백 생길 수 있음)</option>
-          <option value="110% auto">조금 크게</option>
-          <option value="130% auto">크게</option>
-          <option value="160% auto">매우 크게</option>
+      <div class="f"><label>사진 크기 (사진이 짤릴 때 조정)</label>
+        <select id="heroSize" onchange="live()">
+          <option value="cover">꽉 채우기 — 사진이 잘릴 수 있음 (기본)</option>
+          <option value="contain">전체 보이기 — 사진 전체가 보이지만 여백 생김</option>
+          <option value="110% auto">조금 크게 확대</option>
+          <option value="130% auto">크게 확대</option>
+          <option value="160% auto">매우 크게 확대</option>
         </select>
       </div>
       <div class="f">
-        <label>어두운 정도 (글씨 잘 보이게) &nbsp;<span id="heroDimVal" style="color:#42A5F5;font-weight:700;">50%</span></label>
-        <input type="range" id="heroDim" min="0" max="80" value="50" oninput="document.getElementById('heroDimVal').textContent=this.value+'%';live()" style="width:100%;accent-color:#42A5F5;margin-top:4px;">
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:#4A6A8A;margin-top:2px;"><span>밝게</span><span>어둡게</span></div>
+        <div class="f-row"><label>어두운 정도 (글씨가 잘 안 보이면 어둡게)</label><span class="val" id="vDim">50%</span></div>
+        <input type="range" id="heroDim" min="0" max="80" value="50" oninput="document.getElementById('vDim').textContent=this.value+'%';live()">
+        <div class="range-labels"><span>밝게 (사진 선명)</span><span>어둡게 (글씨 선명)</span></div>
       </div>
     </div>
-    <div class="sec">갤러리 (6장)</div>
-    <div class="g2-upload">
-      <div class="upload-box" onclick="document.getElementById('ug1').click()"><div class="ui">📷</div><div class="ut">갤러리 1</div><input type="file" id="ug1" accept="image/*" onchange="upImg('ug1','pv1','g1')"><img class="preview" id="pv1"></div>
-      <div class="upload-box" onclick="document.getElementById('ug2').click()"><div class="ui">📷</div><div class="ut">갤러리 2</div><input type="file" id="ug2" accept="image/*" onchange="upImg('ug2','pv2','g2')"><img class="preview" id="pv2"></div>
-      <div class="upload-box" onclick="document.getElementById('ug3').click()"><div class="ui">📷</div><div class="ut">갤러리 3</div><input type="file" id="ug3" accept="image/*" onchange="upImg('ug3','pv3','g3')"><img class="preview" id="pv3"></div>
-      <div class="upload-box" onclick="document.getElementById('ug4').click()"><div class="ui">📷</div><div class="ut">갤러리 4</div><input type="file" id="ug4" accept="image/*" onchange="upImg('ug4','pv4','g4')"><img class="preview" id="pv4"></div>
-      <div class="upload-box" onclick="document.getElementById('ug5').click()"><div class="ui">📷</div><div class="ut">갤러리 5</div><input type="file" id="ug5" accept="image/*" onchange="upImg('ug5','pv5','g5')"><img class="preview" id="pv5"></div>
-      <div class="upload-box" onclick="document.getElementById('ug6').click()"><div class="ui">📷</div><div class="ut">갤러리 6</div><input type="file" id="ug6" accept="image/*" onchange="upImg('ug6','pv6','g6')"><img class="preview" id="pv6"></div>
-    </div>
+
+    <div class="hr"></div>
+
+    <!-- 갤러리 사진 -->
+    <div class="sec">② 갤러리 사진 (청소 현장)</div>
+    <div class="note">💡 홈페이지 위치: 서비스 섹션 아래 "청소 현장" 사진 6칸<br>
+    <strong>┌──┬──┬──┐</strong><br>
+    <strong>│1 │2 │3 │</strong> ← 위쪽 행<br>
+    <strong>│4 │5 │6 │</strong> ← 아래 행<br>
+    <strong>└──┴──┴──┘</strong><br>
+    파일명: images/gallery1.jpg ~ gallery6.jpg</div>
+    <div id="gal-up"></div>
+
+    <div class="hr"></div>
+
+    <!-- 특징 카드 사진 -->
+    <div class="sec">③ 선택이유 카드 사진 (선택)</div>
+    <div class="note">💡 홈페이지 위치: ⚡당일출동, 🔍꼼꼼한품질, 💰투명한가격 카드 상단<br>사진을 넣으면 카드 맨 위에 자연스럽게 붙어요.<br>없으면 기존 디자인 그대로.<br>파일명: images/feat1.jpg, feat2.jpg, feat3.jpg</div>
+    <div class="g3-up" id="feat-img-up"></div>
+
+    <div class="hr"></div>
+
+    <!-- 서비스 카드 사진 -->
+    <div class="sec">④ 서비스 카드 사진 (선택)</div>
+    <div class="note">💡 홈페이지 위치: 사무실청소, 병원청소 등 서비스 카드 상단<br>사진을 넣으면 카드 맨 위에 자연스럽게 붙어요.<br>없으면 기존 디자인 그대로.<br>파일명: images/svc1.jpg ~ svc5.jpg</div>
+    <div class="g3-up" id="svc-img-up"></div>
+
   </div>
 
-  <!-- 7: 링크 & 사진경로 -->
+  <!-- 7: 링크 -->
   <div class="tc" id="tc7">
     <div class="sec">링크</div>
     <div class="f"><label>구글폼 URL</label><input id="formUrl" value="https://forms.gle/your-form-id" oninput="live()"></div>
     <div class="f"><label>카카오 오픈카톡 URL</label><input id="kakaoUrl" value="https://open.kakao.com/o/your-link" oninput="live()"></div>
-    <div class="f"><label>네이버 블로그 URL (없으면 비워두세요)</label><input id="blogUrl" value="https://blog.naver.com/your-id" oninput="live()"></div>
+    <div class="f"><label>네이버 블로그 URL (없으면 비워두세요)</label><input id="blogUrl" value="" oninput="live()"></div>
     <div class="f"><label>블로그 버튼 텍스트</label><input id="blogLabel" value="네이버 블로그" oninput="live()"></div>
     <div class="hr"></div>
     <div class="sec">사진 경로 (깃허브 방식)</div>
-    <div class="note">
-      깃허브 저장소에 <strong>images/</strong> 폴더 만들고 사진 올린 뒤<br>파일명을 아래에 입력하세요.<br>
-      예: hero.jpg 올리면 → <strong>images/hero.jpg</strong>
-    </div>
-    <div class="f"><label>히어로 배경 경로</label><input id="heroImagePath" value="images/hero.jpg" oninput="live()" placeholder="없으면 비워두세요"></div>
-    <div class="f"><label>갤러리 1</label><input id="gp1" value="images/gallery1.jpg" oninput="live()"></div>
-    <div class="f"><label>갤러리 2</label><input id="gp2" value="images/gallery2.jpg" oninput="live()"></div>
-    <div class="f"><label>갤러리 3</label><input id="gp3" value="images/gallery3.jpg" oninput="live()"></div>
-    <div class="f"><label>갤러리 4</label><input id="gp4" value="images/gallery4.jpg" oninput="live()"></div>
-    <div class="f"><label>갤러리 5</label><input id="gp5" value="images/gallery5.jpg" oninput="live()"></div>
-    <div class="f"><label>갤러리 6</label><input id="gp6" value="images/gallery6.jpg" oninput="live()"></div>
-    <div class="hr"></div>
-    <div class="sec">컬러</div>
-    <div class="f"><label>포인트 컬러</label>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input type="color" id="cMain" value="#1976D2" oninput="syncColor('cMain','cMainT');live()" style="width:38px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:2px;background:transparent;">
-        <input id="cMainT" value="#1976D2" oninput="syncColorText('cMainT','cMain')" style="flex:1">
-      </div>
-    </div>
-    <div class="f"><label>강조 컬러</label>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input type="color" id="cAcc" value="#00BFA5" oninput="syncColor('cAcc','cAccT');live()" style="width:38px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:2px;background:transparent;">
-        <input id="cAccT" value="#00BFA5" oninput="syncColorText('cAccT','cAcc')" style="flex:1">
-      </div>
-    </div>
+    <div class="note">깃허브 images/ 폴더에 사진 올린 후 경로 입력<br>예) <strong>images/hero.jpg</strong></div>
+    <div class="f"><label>히어로 배경 경로 (직접 업로드 없을 때)</label><input id="heroPath" value="images/hero.jpg" placeholder="없으면 비워두세요" oninput="live()"></div>
+    <div id="gal-paths"></div>
   </div>
 
-  </div><!-- /scroll -->
-</div><!-- /left -->
+  <!-- 8: 섹션 표시/숨기기 -->
+  <div class="tc" id="tc8">
+    <div class="sec">섹션 켜기 / 끄기</div>
+    <div class="note">끄면 홈페이지에서 해당 섹션이 완전히 사라져요.<br>언제든 다시 켜면 내용 그대로 복원!</div>
+    <div id="sec-toggles"></div>
+  </div>
+
+  </div>
+</div>
 
 <div class="right">
   <div class="pbar">
     <span class="pbar-label">👁 실시간 미리보기</span>
-    <div style="display:flex;gap:8px;align-items:center">
-      <span style="font-size:12px;color:#5A7A9A">수정하면 바로 반영돼요</span>
+    <div style="display:flex;gap:7px;align-items:center">
+      <span style="font-size:11px;color:#5A7A9A">수정하면 바로 반영</span>
       <button class="btn btn-dl" onclick="downloadFile()">⬇ index.html 다운로드</button>
     </div>
   </div>
-  <iframe id="iframe"></iframe>
+  <iframe id="iframe" sandbox="allow-scripts allow-same-origin"></iframe>
 </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-// ── 이미지 저장소 ──
-const imgs = {heroImg:null,g1:null,g2:null,g3:null,g4:null,g5:null,g6:null};
+// ═══════════════════════════
+// 이미지 스토어
+// ═══════════════════════════
+const imgs = {};
 
-function upImg(inputId, previewId, key) {
-  const file = document.getElementById(inputId).files[0];
-  if (!file) return;
+function upImg(iid, pid, key) {
+  const f = document.getElementById(iid)?.files?.[0]; if (!f) return;
   const r = new FileReader();
   r.onload = e => {
     imgs[key] = e.target.result;
-    const p = document.getElementById(previewId);
-    p.src = e.target.result;
-    p.style.display = 'block';
+    const p = document.getElementById(pid);
+    if (p) { p.src = e.target.result; p.style.display = 'block'; }
+    showDelBtn(pid, key, iid);
     live();
   };
-  r.readAsDataURL(file);
+  r.readAsDataURL(f);
 }
 
-// ── 탭 ──
-function sw(n) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('on', i===n));
-  document.querySelectorAll('.tc').forEach((t,i) => t.classList.toggle('on', i===n));
+function upDirect(el, pid, key) {
+  const f = el.files?.[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    imgs[key] = e.target.result;
+    const p = document.getElementById(pid);
+    if (p) { p.src = e.target.result; p.style.display = 'block'; }
+    showDelBtn(pid, key, el.id);
+    live();
+  };
+  r.readAsDataURL(f);
 }
 
-// ── 컬러 동기화 ──
-function syncColor(colorId, textId) { document.getElementById(textId).value = document.getElementById(colorId).value; }
-function syncColorText(textId, colorId) { const v = document.getElementById(textId).value; if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById(colorId).value=v; live();} }
+function showDelBtn(pid, key, inputId) {
+  const btnId = 'delbtn_' + pid;
+  if (document.getElementById(btnId)) return;
+  const p = document.getElementById(pid);
+  if (!p) return;
+  const btn = document.createElement('button');
+  btn.id = btnId;
+  btn.textContent = '✕ 사진 삭제';
+  btn.style.cssText = 'display:block;width:100%;margin-top:5px;padding:5px;background:rgba(239,83,80,.18);border:1px solid rgba(239,83,80,.4);color:#EF5350;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;';
+  btn.onclick = () => {
+    imgs[key] = null;
+    p.src = ''; p.style.display = 'none';
+    const inp = document.getElementById(inputId);
+    if (inp) inp.value = '';
+    btn.remove();
+    live();
+  };
+  p.parentElement.appendChild(btn);
+}
 
-// ── 값 읽기 ──
-function g(id) { return (document.getElementById(id)?.value || '').trim(); }
-function gn(id) { return Math.min(5,Math.max(1,parseInt(g(id))||5)); }
+// ═══════════════════════════
+// 탭
+// ═══════════════════════════
+function sw(n) { document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('on',i===n)); document.querySelectorAll('.tc').forEach((t,i)=>t.classList.toggle('on',i===n)); }
 
-// ── CONFIG 생성 ──
+// ═══════════════════════════
+// 섹션 토글
+// ═══════════════════════════
+const secState = { features:{label:'선택이유 & 프로세스',shown:true}, services:{label:'제공 서비스',shown:true}, gallery:{label:'갤러리',shown:true}, price:{label:'가격표',shown:true}, reviews:{label:'고객 후기',shown:true}, faq:{label:'FAQ',shown:true} };
+function renderSecToggles() {
+  document.getElementById('sec-toggles').innerHTML = Object.entries(secState).map(([k,s])=>`
+    <div class="sec-toggle-row">
+      <div><div class="sec-toggle-label">${s.label}</div><div class="sec-toggle-sub">${s.shown?'✅ 표시 중':'🚫 숨김'}</div></div>
+      <button class="toggle-btn ${s.shown?'':'off'}" onclick="toggleSec('${k}')">${s.shown?'켜짐':'꺼짐'}</button>
+    </div>`).join('');
+}
+function toggleSec(k) { secState[k].shown=!secState[k].shown; renderSecToggles(); live(); }
+
+// ═══════════════════════════
+// 동적 데이터 (shown으로 숨기기)
+// ═══════════════════════════
+let stats=[
+  {num:'1,200+',label:'누적 청소 건수',shown:true},{num:'98%',label:'고객 재이용률',shown:true},
+  {num:'4.9★',label:'평균 만족도',shown:true},{num:'5년+',label:'서비스 경력',shown:true}
+];
+let feats=[
+  {icon:'⚡',title:'당일·익일 출동',desc:'예약 즉시 배정, 긴급 청소도 빠르게 해결해드려요.',shown:true},
+  {icon:'🔍',title:'꼼꼼한 품질관리',desc:'청소 후 체크리스트 확인, 만족 못하면 재청소 무료.',shown:true},
+  {icon:'💰',title:'투명한 가격',desc:'방문 전 확정 견적, 추가 비용 절대 없습니다.',shown:true}
+];
+let procs=[
+  {title:'상담 & 견적',desc:'카톡·구글폼 접수 → 당일 견적 안내',shown:true},
+  {title:'일정 확정',desc:'원하는 날짜·시간 선택, 전담 매니저 배정',shown:true},
+  {title:'청소 진행',desc:'체크리스트 기반 꼼꼼 청소 진행',shown:true},
+  {title:'완료 보고',desc:'청소 전후 사진 카톡 전송, 만족 확인',shown:true}
+];
+let svcs=[
+  {icon:'🏢',name:'사무실 정기청소',tag:'주 1~3회 정기계약',desc:'맞춤형 정기계약으로 항상 쾌적한 사무환경을 유지하세요. 주 1~3회 빈도 선택 가능.',highlight:false,shown:true},
+  {icon:'🏥',name:'병원 정기청소',tag:'의료기관 위생관리',desc:'병원·의원·치과 등 의료시설 특화 정기청소. 위생 기준에 맞춘 꼼꼼한 관리.',highlight:false,shown:true},
+  {icon:'✨',name:'사무실 대청소·왁스코팅',tag:'바닥 왁스코팅 포함',desc:'연 1~2회 대청소와 바닥 왁스코팅으로 공간을 새것처럼! 광택 복원 전문.',highlight:false,shown:true},
+  {icon:'📦',name:'입주청소',tag:'입주 전 꼼꼼 청소',desc:'새 공간 입주 전 구석구석 완벽 청소. 평당 요금제로 투명하게.',highlight:false,shown:true},
+  {icon:'🪟',name:'유리창 청소',tag:'퓨어워터 고가장비 사용',desc:'퓨어워터 전문 장비로 줄기 없이 완벽하게! 고층 외창도 안전하게 시공.',highlight:true,shown:true}
+];
+let reviews=[
+  {stars:5,name:'김○○ · 강남구',service:'사무실 정기청소',text:'정말 꼼꼼하게 해주셨어요! 구석구석 깨끗하게 닦아주시고 화장실도 새것 같아졌네요. 다음 달에도 꼭 예약할게요 😊',shown:true},
+  {stars:5,name:'이○○ · 서초구',service:'병원 정기청소',text:'사무실이 이렇게 깨끗해진 적이 없었어요. 직원들도 다 만족해하고 공기가 달라진 것 같아요. 강력 추천합니다!',shown:true},
+  {stars:5,name:'박○○ · 송파구',service:'입주청소',text:'입주 전 청소를 부탁드렸는데 정말 깔끔하게 해주셨어요. 가격도 합리적이고 친절하셔서 정기계약 바로 맺었습니다!',shown:true}
+];
+let faqs=[
+  {q:'청소 도구는 직접 가져오나요?',a:'네, 전문 청소 장비와 친환경 세제를 모두 지참합니다. 고객님은 별도로 준비하실 필요가 없어요.',shown:true},
+  {q:'예약 당일 취소·변경이 가능한가요?',a:'서비스 24시간 전까지 무료 취소·변경 가능합니다. 당일 취소는 취소 수수료가 발생할 수 있어요.',shown:true},
+  {q:'정기계약 시 할인이 되나요?',a:'정기계약(주 1~3회)을 맺으시면 회당 요금에서 5~15% 할인 혜택을 드립니다.',shown:true},
+  {q:'청소 후 만족하지 못하면요?',a:'청소 완료 후 24시간 이내 불만족 부분 말씀해 주시면 재청소 서비스를 무료로 제공해드립니다.',shown:true},
+  {q:'유리창 청소 퓨어워터가 뭔가요?',a:'퓨어워터(순수 정제수) 장비로 세제 없이 물만으로 세척해 줄기·물자국 없이 완벽하게 닦이는 전문 장비입니다.',shown:true}
+];
+
+// ═══════════════════════════
+// 추가
+// ═══════════════════════════
+const dataMap = {stats,feats,procs,svcs,reviews,faqs};
+const maxMap = {stats:6,feats:6,procs:6,svcs:8,reviews:9,faqs:12};
+function addItem(key, def) { const a=dataMap[key]; if(a.length>=maxMap[key])return alert('최대 '+maxMap[key]+'개'); a.push({...def}); renderAll(); live(); }
+
+// ═══════════════════════════
+// 토글 버튼 생성
+// ═══════════════════════════
+function mkTgl(arr, i, fn) {
+  return `<button class="toggle-btn ${arr[i].shown?'':'off'}" onclick="${fn}(${i})">${arr[i].shown?'표시':'숨김'}</button>`;
+}
+
+// ═══════════════════════════
+// 렌더링
+// ═══════════════════════════
+function renderStats() {
+  document.getElementById('stats-ed').innerHTML = stats.map((s,i)=>`
+    <div class="ce ${s.shown?'':'hidden-item'}">
+      <div class="ct"><span class="ct-title">숫자 ${i+1}</span>${mkTgl(stats,i,'tStats')}</div>
+      <div class="g2">
+        <div class="f"><label>숫자</label><input value="${e(s.num)}" oninput="stats[${i}].num=this.value;live()"></div>
+        <div class="f"><label>설명</label><input value="${e(s.label)}" oninput="stats[${i}].label=this.value;live()"></div>
+      </div>
+    </div>`).join('');
+}
+function tStats(i){stats[i].shown=!stats[i].shown;renderStats();live();}
+
+function renderFeats() {
+  document.getElementById('feat-ed').innerHTML = feats.map((f,i)=>`
+    <div class="ce ${f.shown?'':'hidden-item'}">
+      <div class="ct"><span class="ct-title">특징 ${i+1}</span>${mkTgl(feats,i,'tFeats')}</div>
+      <div class="g2">
+        <div class="f"><label>아이콘</label><input value="${e(f.icon)}" oninput="feats[${i}].icon=this.value;live()"></div>
+        <div class="f"><label>제목</label><input value="${e(f.title)}" oninput="feats[${i}].title=this.value;live()"></div>
+      </div>
+      <div class="f"><label>설명</label><textarea oninput="feats[${i}].desc=this.value;live()">${e(f.desc)}</textarea></div>
+    </div>`).join('');
+}
+function tFeats(i){feats[i].shown=!feats[i].shown;renderFeats();live();}
+
+function renderProcs() {
+  document.getElementById('proc-ed').innerHTML = procs.map((p,i)=>`
+    <div class="ce ${p.shown?'':'hidden-item'}">
+      <div class="ct"><span class="ct-title">STEP ${i+1}</span>${mkTgl(procs,i,'tProcs')}</div>
+      <div class="f"><label>제목</label><input value="${e(p.title)}" oninput="procs[${i}].title=this.value;live()"></div>
+      <div class="f"><label>설명</label><input value="${e(p.desc)}" oninput="procs[${i}].desc=this.value;live()"></div>
+    </div>`).join('');
+}
+function tProcs(i){procs[i].shown=!procs[i].shown;renderProcs();live();}
+
+function renderSvcs() {
+  document.getElementById('svc-ed').innerHTML = svcs.map((s,i)=>`
+    <div class="ce ${s.shown?'':'hidden-item'}">
+      <div class="ct">
+        <span class="ct-title">서비스 ${i+1}</span>
+        ${mkTgl(svcs,i,'tSvcs')}
+        <button class="toggle-btn off" onclick="delSvc(${i})" style="margin-left:3px">삭제</button>
+      </div>
+      <div class="g2">
+        <div class="f"><label>아이콘</label><input value="${e(s.icon)}" oninput="svcs[${i}].icon=this.value;live()"></div>
+        <div class="f"><label>이름</label><input value="${e(s.name)}" oninput="svcs[${i}].name=this.value;live()"></div>
+      </div>
+      <div class="f"><label>태그</label><input value="${e(s.tag)}" oninput="svcs[${i}].tag=this.value;live()"></div>
+      <div class="f"><label>설명</label><textarea oninput="svcs[${i}].desc=this.value;live()">${e(s.desc)}</textarea></div>
+      <div class="f"><label><input type="checkbox" ${s.highlight?'checked':''} onchange="svcs[${i}].highlight=this.checked;live()" style="width:auto;margin-right:5px;">주황 강조 카드</label></div>
+    </div>`).join('');
+}
+function tSvcs(i){svcs[i].shown=!svcs[i].shown;renderSvcs();renderSvcImgUp();live();}
+function delSvc(i){if(svcs.length<=1)return alert('최소 1개는 있어야 해요.');if(!confirm('서비스 '+(i+1)+'을 삭제할까요?'))return;svcs.splice(i,1);renderSvcs();renderSvcImgUp();live();}
+
+function renderReviews() {
+  document.getElementById('rv-ed').innerHTML = reviews.map((r,i)=>`
+    <div class="ce ${r.shown?'':'hidden-item'}">
+      <div class="ct"><span class="ct-title">후기 ${i+1}</span>${mkTgl(reviews,i,'tReviews')}</div>
+      <div class="g2">
+        <div class="f"><label>별점(1~5)</label><input type="number" min="1" max="5" value="${r.stars}" oninput="reviews[${i}].stars=+this.value||5;live()"></div>
+        <div class="f"><label>이름·지역</label><input value="${e(r.name)}" oninput="reviews[${i}].name=this.value;live()"></div>
+      </div>
+      <div class="f"><label>이용 서비스</label><input value="${e(r.service)}" oninput="reviews[${i}].service=this.value;live()"></div>
+      <div class="f"><label>후기 내용</label><textarea oninput="reviews[${i}].text=this.value;live()">${e(r.text)}</textarea></div>
+    </div>`).join('');
+}
+function tReviews(i){reviews[i].shown=!reviews[i].shown;renderReviews();live();}
+
+function renderFaqs() {
+  document.getElementById('faq-ed').innerHTML = faqs.map((f,i)=>`
+    <div class="ce ${f.shown?'':'hidden-item'}">
+      <div class="ct"><span class="ct-title">Q${i+1}</span>${mkTgl(faqs,i,'tFaqs')}</div>
+      <div class="f"><label>질문</label><input value="${e(f.q)}" oninput="faqs[${i}].q=this.value;live()"></div>
+      <div class="f"><label>답변</label><textarea oninput="faqs[${i}].a=this.value;live()">${e(f.a)}</textarea></div>
+    </div>`).join('');
+}
+function tFaqs(i){faqs[i].shown=!faqs[i].shown;renderFaqs();live();}
+
+function renderGalUp() {
+  const pos = ['맨 왼쪽 위 (1번)', '맨 위 가운데 (2번)', '맨 오른쪽 위 (3번)', '맨 왼쪽 아래 (4번)', '아래 가운데 (5번)', '맨 오른쪽 아래 (6번)'];
+  document.getElementById('gal-up').innerHTML = [1,2,3,4,5,6].map((i,idx)=>`
+    <div class="ce" style="margin-bottom:9px">
+      <div class="ct"><span class="ct-title">📷 갤러리 ${i} — ${pos[idx]}</span></div>
+      <div style="font-size:10px;color:#5A7A9A;margin-bottom:6px">파일명: images/gallery${i}.jpg</div>
+      <div class="upload-box" onclick="document.getElementById('ug${i}').click()" style="margin-bottom:7px">
+        <div class="ui" style="font-size:18px">📷</div>
+        <div class="ut" style="font-size:10px">클릭해서 사진 업로드</div>
+        <input type="file" id="ug${i}" accept="image/*" onchange="upImg('ug${i}','pvg${i}','gal${i}')">
+        <img class="preview" id="pvg${i}">
+      </div>
+      <div class="f">
+        <div class="f-row"><label>좌우 위치 (사진의 어느 부분이 중앙에 올지)</label><span class="val" id="gXv${i}">50%</span></div>
+        <input type="range" id="gX${i}" min="0" max="100" value="50" oninput="document.getElementById('gXv${i}').textContent=this.value+'%';live()">
+        <div class="range-labels"><span>← 사진 왼쪽 보기</span><span>사진 오른쪽 보기 →</span></div>
+      </div>
+      <div class="f">
+        <div class="f-row"><label>상하 위치 (위/아래 어느 부분이 보일지)</label><span class="val" id="gYv${i}">50%</span></div>
+        <input type="range" id="gY${i}" min="0" max="100" value="50" oninput="document.getElementById('gYv${i}').textContent=this.value+'%';live()">
+        <div class="range-labels"><span>↑ 사진 위쪽 보기</span><span>사진 아래쪽 보기 ↓</span></div>
+      </div>
+      <div class="f"><label>사진 크기 (짤릴 때 조정)</label>
+        <select id="gS${i}" onchange="live()" style="background-color:#0A1525">
+          <option value="cover">꽉 채우기 — 잘릴 수 있음 (기본)</option>
+          <option value="contain">전체 보이기 — 여백 생길 수 있음</option>
+          <option value="110%">조금 크게 확대</option>
+          <option value="130%">크게 확대</option>
+          <option value="80%">작게 — 양쪽 여백 생김</option>
+        </select>
+      </div>
+    </div>`).join('');
+}
+function renderGalPaths() {
+  document.getElementById('gal-paths').innerHTML = [1,2,3,4,5,6].map(i=>
+    `<div class="f"><label>갤러리 ${i}</label><input id="gp${i}" value="images/gallery${i}.jpg" oninput="live()"></div>`).join('');
+}
+function renderFeatImgUp() {
+  document.getElementById('feat-img-up').innerHTML = feats.map((_,i)=>{
+    const k=`fImg${i}`,p=`pfImg${i}`;
+    return `<div class="mini-up" onclick="document.getElementById('ufi${i}').click()">
+      <div class="mi">🖼</div><div class="mt">특징${i+1}<br><span style="font-size:9px;color:#4A6A8A">feat${i+1}.jpg</span></div>
+      <input type="file" id="ufi${i}" accept="image/*" onchange="upDirect(this,'${p}','${k}')">
+      <img class="mpv" id="${p}">
+    </div>`;
+  }).join('');
+}
+function renderSvcImgUp() {
+  document.getElementById('svc-img-up').innerHTML = svcs.map((_,i)=>{
+    const k=`sImg${i}`,p=`psImg${i}`;
+    return `<div class="mini-up" onclick="document.getElementById('usi${i}').click()">
+      <div class="mi">🖼</div><div class="mt">서비스${i+1}<br><span style="font-size:9px;color:#4A6A8A">svc${i+1}.jpg</span></div>
+      <input type="file" id="usi${i}" accept="image/*" onchange="upDirect(this,'${p}','${k}')">
+      <img class="mpv" id="${p}">
+    </div>`;
+  }).join('');
+}
+
+function renderAll() {
+  renderStats(); renderFeats(); renderProcs(); renderSvcs(); renderReviews(); renderFaqs();
+  renderSecToggles(); renderFeatImgUp(); renderSvcImgUp();
+}
+
+// ═══════════════════════════
+// 헬퍼
+// ═══════════════════════════
+function e(s){return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function g(id){return(document.getElementById(id)?.value||'').trim();}
+function gn(id,d){return parseInt(document.getElementById(id)?.value||d)||d;}
+function fv(el,lid){document.getElementById(lid).textContent=el.value+'px';}
+function syncC(c,t){document.getElementById(t).value=document.getElementById(c).value;}
+function syncCT(t,c){const v=document.getElementById(t).value;if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById(c).value=v;live();}}
+
+// ═══════════════════════════
+// CONFIG 생성 (기존 index.html 구조 그대로)
+// ═══════════════════════════
 function buildConfig() {
-  const heroImgFinal = imgs.heroImg || (g('heroImagePath') ? g('heroImagePath') : '');
-  const galImgs = [1,2,3,4,5,6].map(i => imgs[`g${i}`] || g(`gp${i}`) || `images/gallery${i}.jpg`);
-
+  const heroImg = imgs['hero'] || g('heroPath') || '';
+  const galImgs = [1,2,3,4,5,6].map(i=>({
+    src: imgs[`gal${i}`] || g(`gp${i}`) || `images/gallery${i}.jpg`,
+    x: g(`gX${i}`) || '50',
+    y: g(`gY${i}`) || '50',
+    size: g(`gS${i}`) || 'cover'
+  }));
+  const featImgs = feats.map((_,i)=>imgs[`fImg${i}`]||'');
+  const svcImgs  = svcs.map((_,i)=>imgs[`sImg${i}`]||'');
+  const fs = {
+    base:gn('slBs',16),heroSub:gn('slHS',18),h2:gn('slH2',44),secSub:gn('slSS',17),
+    featTitle:gn('slFT',20),featDesc:gn('slFD',15),svcName:gn('slSN',17),svcDesc:gn('slSD',14),
+    priceNum:gn('slPN',28),rvText:gn('slRV',15),faqQ:gn('slFQ',16),faqA:gn('slFA',15)
+  };
   return {
-    brand: g('brand')||'달려라청소',
-    tagline: g('tagline'),
-    phone: g('phone'),
-    hours: g('hours'),
-    noticeBar: g('noticeBar'),
-    formUrl: g('formUrl'),
-    kakaoUrl: g('kakaoUrl'),
-    blogUrl: g('blogUrl'),
-    blogLabel: g('blogLabel')||'네이버 블로그',
-    heroTitle1: g('heroTitle1'),
-    heroTitle2: g('heroTitle2'),
-    heroSub: g('heroSub'),
-    btn1: g('btn1'),
-    btn2: g('btn2'),
-    stats: [
-      {num:g('s1n'),label:g('s1l')},
-      {num:g('s2n'),label:g('s2l')},
-      {num:g('s3n'),label:g('s3l')},
-      {num:g('s4n'),label:g('s4l')},
-    ],
-    features: [
-      {icon:g('fi1'),title:g('ft1'),desc:g('fd1')},
-      {icon:g('fi2'),title:g('ft2'),desc:g('fd2')},
-      {icon:g('fi3'),title:g('ft3'),desc:g('fd3')},
-    ],
-    process: [
-      {title:g('p1t'),desc:g('p1d')},
-      {title:g('p2t'),desc:g('p2d')},
-      {title:g('p3t'),desc:g('p3d')},
-      {title:g('p4t'),desc:g('p4d')},
-    ],
-    services: [
-      {icon:g('sv1i'),name:g('sv1n'),tag:g('sv1g'),desc:g('sv1d'),highlight:false},
-      {icon:g('sv2i'),name:g('sv2n'),tag:g('sv2g'),desc:g('sv2d'),highlight:false},
-      {icon:g('sv3i'),name:g('sv3n'),tag:g('sv3g'),desc:g('sv3d'),highlight:false},
-      {icon:g('sv4i'),name:g('sv4n'),tag:g('sv4g'),desc:g('sv4d'),highlight:false},
-      {icon:g('sv5i'),name:g('sv5n'),tag:g('sv5g'),desc:g('sv5d'),highlight:true},
-    ],
-    priceTitle: g('prTitle'),
-    priceSub: g('prSub'),
-    regularPrices: [
+    brand:g('brand')||'달려라청소', tagline:g('tagline'), phone:g('phone'), hours:g('hours'), noticeBar:g('noticeBar'),
+    formUrl:g('formUrl'), kakaoUrl:g('kakaoUrl'), blogUrl:g('blogUrl'), blogLabel:g('blogLabel')||'네이버 블로그',
+    heroTitle1:g('heroTitle1'), heroTitle2:g('heroTitle2'), heroSub:g('heroSub'), btn1:g('btn1'), btn2:g('btn2'),
+    stats: stats.filter(s=>s.shown).map(s=>({num:s.num,label:s.label})),
+    features: feats.filter(f=>f.shown).map((f,i)=>({icon:f.icon,title:f.title,desc:f.desc,img:featImgs[feats.indexOf(f)]||''})),
+    process:  procs.filter(p=>p.shown).map(p=>({title:p.title,desc:p.desc})),
+    services: svcs.filter(s=>s.shown).map((s,i)=>({icon:s.icon,name:s.name,tag:s.tag,desc:s.desc,highlight:s.highlight,img:svcImgs[svcs.indexOf(s)]||''})),
+    priceTitle:g('prTitle'), priceSub:g('prSub'),
+    regularPrices:[
       {name:'주 1회 정기청소',price:g('rg1p'),unit:g('rg1u'),desc:g('rg1d'),popular:true},
       {name:'주 2회 정기청소',price:g('rg2p'),unit:g('rg2u'),desc:g('rg2d'),popular:false},
-      {name:'주 3회 정기청소',price:g('rg3p'),unit:g('rg3u'),desc:g('rg3d'),popular:false},
+      {name:'주 3회 정기청소',price:g('rg3p'),unit:g('rg3u'),desc:g('rg3d'),popular:false}
     ],
-    deepCleanPrices: [
-      {name:'대청소 기본',price:g('dc1p'),minSize:g('dc1m'),desc:g('dc1d'),popular:false},
-      {name:'왁스코팅 추가',price:g('dc2p'),minSize:g('dc2m'),desc:g('dc2d'),popular:false},
+    deepCleanPrices:[
+      {name:'대청소 기본',price:g('dc1p'),minSize:g('dc1m'),desc:g('dc1d')},
+      {name:'왁스코팅 추가',price:g('dc2p'),minSize:g('dc2m'),desc:g('dc2d')}
     ],
-    moveinPrices: [
-      {name:'입주청소',price:g('mv1p'),minSize:g('mv1m'),desc:g('mv1d'),popular:false},
-    ],
-    glassPrices: [
-      {name:'유리창 청소',price:g('gl1p'),minSize:g('gl1m'),desc:g('gl1d'),popular:false},
-    ],
-    priceNote: g('prNote'),
-    reviews: [
-      {stars:gn('r1s'),name:g('r1n'),service:g('r1sv'),text:g('r1t')},
-      {stars:gn('r2s'),name:g('r2n'),service:g('r2sv'),text:g('r2t')},
-      {stars:gn('r3s'),name:g('r3n'),service:g('r3sv'),text:g('r3t')},
-    ],
-    faqs: [
-      {q:g('q1q'),a:g('q1a')},
-      {q:g('q2q'),a:g('q2a')},
-      {q:g('q3q'),a:g('q3a')},
-      {q:g('q4q'),a:g('q4a')},
-      {q:g('q5q'),a:g('q5a')},
-    ],
-    heroImage: heroImgFinal,
-    heroImgX: g('heroX')||'50',
-    heroImgY: g('heroY')||'50',
-    heroImgSize: g('heroSize')||'cover',
-    heroImgDim: g('heroDim')||'50',
-    galleryImages: galImgs,
-    footerCopy: g('footerCopy'),
-    colorMain: g('cMain')||'#1976D2',
-    colorAcc: g('cAcc')||'#00BFA5',
+    moveinPrices:[{name:'입주청소',price:g('mv1p'),minSize:g('mv1m'),desc:g('mv1d')}],
+    glassPrices:[{name:'유리창 청소',price:g('gl1p'),minSize:g('gl1m'),desc:g('gl1d')}],
+    priceNote:g('prNote'),
+    reviews: reviews.filter(r=>r.shown).map(r=>({stars:r.stars,name:r.name,service:r.service,text:r.text})),
+    faqs: faqs.filter(f=>f.shown).map(f=>({q:f.q,a:f.a})),
+    heroImage:heroImg, heroImgX:g('heroX')||'50', heroImgY:g('heroY')||'50',
+    heroImgSize:g('heroSize')||'cover', heroImgDim:g('heroDim')||'50',
+    galleryImages:galImgs, footerCopy:g('footerCopy'),
+    colorMain:g('cMain')||'#1976D2', colorAcc:g('cAcc')||'#00BFA5',
+    sections:Object.fromEntries(Object.entries(secState).map(([k,v])=>[k,v.shown])),
+    fontSizes:fs
   };
 }
 
-// ── INDEX.HTML 생성 ──
-// (index.html 파일의 내용을 그대로 가져와서 CONFIG 부분만 교체)
-const INDEX_TEMPLATE = `<!DOCTYPE html>
+// ═══════════════════════════
+// INDEX.HTML 생성 — 기존 구조 그대로 유지
+// ═══════════════════════════
+function generateHTML() {
+  const C = buildConfig();
+  const fs = C.fontSizes;
+
+  // 서비스 그리드 클래스 (카드 수에 따라 PC 레이아웃 결정)
+  const svcCount = C.services.length;
+  const svcGridClass = svcCount <= 3 ? 'svc-grid' :
+                       svcCount === 4 ? 'svc-grid svc-4' :
+                       svcCount >= 5  ? 'svc-grid svc-6' : 'svc-grid';
+
+  // 갤러리 HTML (각 사진 개별 위치/크기)
+  const galHTML = C.galleryImages.map(g => {
+    const pos = `${g.x||50}% ${g.y||50}%`;
+    const sz  = g.size || 'cover';
+    return `<div class="gal-item"><img src="${g.src}" alt="청소 현장" style="object-position:${pos};object-fit:${sz==='cover'||sz==='contain'?sz:'cover'};transform:scale(${sz.endsWith('%')?parseFloat(sz)/100:1})" onerror="this.parentElement.classList.add('gal-empty');this.style.display='none';"></div>`;
+  }).join('');
+  const featHTML = C.features.map(f => {
+    const imgPart = f.img ? `<img src="${f.img}" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:14px 14px 0 0;display:block;margin:-34px -28px 20px;width:calc(100% + 56px);" onerror="this.style.display='none'">` : '';
+    return `<div class="feat-card">${imgPart}<div class="feat-header"><span class="feat-icon">${f.icon}</span><div class="feat-title">${f.title}</div></div><div class="feat-desc">${f.desc}</div></div>`;
+  }).join('');
+
+  // 서비스 카드 HTML (사진 있으면 상단에 자연스럽게)
+  const svcHTML = C.services.map(s => {
+    const imgPart = s.img ? `<img src="${s.img}" alt="" style="width:100%;height:150px;object-fit:cover;border-radius:14px 14px 0 0;display:block;margin:-28px -24px 16px;width:calc(100% + 48px);" onerror="this.style.display='none'">` : '';
+    return `<div class="svc-card${s.highlight?' highlight':''}">${imgPart}<div class="svc-top"><span class="svc-icon">${s.icon}</span><div class="svc-name">${s.name}</div></div><div class="svc-tag">${s.tag}</div><div class="svc-desc">${s.desc}</div></div>`;
+  }).join('');
+
+  const mkCards = (arr,col,pop) => arr.map(p=>`<div class="price-card${p.popular?' '+pop:''}">${p.popular?'<div class="price-badge">🔥 가장 인기</div>':''}<div class="price-name">${p.name}</div><div class="price-price ${col}">${p.price}</div><div class="price-unit">${p.unit||p.minSize||''}</div><div class="price-hr"></div><div class="price-desc">${p.desc}</div></div>`).join('');
+
+  const st = n => '★'.repeat(Math.max(1,Math.min(5,n)))+'☆'.repeat(5-Math.max(1,Math.min(5,n)));
+
+  const S = C.sections||{};
+  const hide = k => S[k]===false ? 'style="display:none"' : '';
+
+  return `<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">달려라청소 - 정기청소 전문</title>
+<title id="page-title">${C.brand} - 정기청소 전문</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
 <script>
-const CONFIG = __CONFIG__;
+const CONFIG = ${JSON.stringify(C,null,2)};
 <\/script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--main:__MAIN__;--acc:__ACC__;--dark:#0D1F35;--text:#1A2B3C;--gray:#5A7080;--light:#F4F8FC;--border:#DDE8F0;}
+:root{--main:${C.colorMain};--acc:${C.colorAcc};--dark:#0D1F35;--text:#1A2B3C;--gray:#5A7080;--light:#F4F8FC;--border:#DDE8F0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Noto Sans KR',sans-serif;color:var(--text);background:#fff;overflow-x:hidden;font-size:16px;line-height:1.7;}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--text);background:#fff;overflow-x:hidden;font-size:${fs.base}px;line-height:1.7;}
 .notice-bar{background:var(--dark);color:rgba(255,255,255,.92);text-align:center;padding:11px 20px;font-size:15px;font-weight:500;}
 nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;box-shadow:0 1px 10px rgba(0,0,0,.07);}
 .nav-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:22px;color:var(--main);text-decoration:none;}
@@ -519,19 +782,19 @@ nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid va
 .nav-cta:hover{background:var(--acc);}
 .hero{min-height:88vh;display:flex;align-items:center;position:relative;overflow:hidden;}
 .hero-bg-default{position:absolute;inset:0;background:linear-gradient(135deg,#EBF4FF 0%,#F0FAF7 60%,#E8F5FF 100%);}
-.hero-bg-img{position:absolute;inset:0;background-size:var(--hero-size,cover);background-position:var(--hero-pos,center);}
-.hero-bg-img::after{content:'';position:absolute;inset:0;background:rgba(10,25,50,var(--hero-dim,.5));}
+.hero-bg-img{position:absolute;inset:0;background-size:${C.heroImgSize||'cover'};background-position:${C.heroImgX||50}% ${C.heroImgY||50}%;}
+.hero-bg-img::after{content:'';position:absolute;inset:0;background:rgba(10,25,50,${parseFloat(C.heroImgDim||50)/100});}
 .hero-deco{position:absolute;right:-60px;top:-60px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(25,118,210,.08),transparent 70%);}
 .hero-deco2{position:absolute;left:-80px;bottom:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,191,165,.07),transparent 70%);}
 .hero-inner{position:relative;z-index:2;max-width:700px;padding:80px 5%;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(25,118,210,.12);border:1px solid rgba(25,118,210,.25);border-radius:30px;padding:8px 20px;font-size:14px;font-weight:700;color:var(--main);margin-bottom:28px;}
-.has-bg .hero-badge{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff;}
+.hero-bg-img .hero-badge{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff;}
 .hero h1{font-weight:900;font-size:clamp(38px,5.5vw,66px);line-height:1.18;margin-bottom:22px;color:var(--dark);}
-.has-bg .hero h1{color:#fff;}
+.hero-bg-img .hero h1{color:#fff;}
 .hl{color:var(--main);}
-.has-bg .hl{color:#90CAF9;}
-.hero-sub{font-size:18px;color:var(--gray);line-height:1.85;margin-bottom:38px;}
-.has-bg .hero-sub{color:rgba(255,255,255,.85);}
+.hero-bg-img .hl{color:#90CAF9;}
+.hero-sub{font-size:${fs.heroSub}px;color:var(--gray);line-height:1.85;margin-bottom:38px;}
+.hero-bg-img .hero-sub{color:rgba(255,255,255,.85);}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
 .btn-hero{display:inline-flex;align-items:center;gap:9px;padding:16px 32px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;transition:all .22s;}
 .btn-main{background:var(--main);color:#fff;box-shadow:0 6px 24px rgba(25,118,210,.3);}
@@ -539,67 +802,66 @@ nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid va
 .btn-kakao{background:#FEE500;color:#3C1E1E;}
 .btn-kakao:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(254,229,0,.4);}
 .stats-bar{background:var(--dark);padding:36px 5%;}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.1);border-radius:14px;overflow:hidden;max-width:900px;margin:0 auto;}
+.stats-grid{display:grid;grid-template-columns:repeat(${C.stats.length},1fr);gap:1px;background:rgba(255,255,255,.1);border-radius:14px;overflow:hidden;max-width:900px;margin:0 auto;}
 .stat{background:rgba(255,255,255,.06);padding:30px 20px;text-align:center;}
 .stat-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:34px;color:#fff;line-height:1;}
 .stat-label{font-size:14px;color:rgba(255,255,255,.6);margin-top:8px;}
 section{padding:96px 5%;}
 .sec-tag{display:inline-block;background:rgba(25,118,210,.08);border:1px solid rgba(25,118,210,.2);color:var(--main);border-radius:30px;padding:7px 20px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;}
-.sec-h2{font-weight:900;font-size:clamp(28px,4vw,44px);color:var(--dark);margin-bottom:14px;}
+.sec-h2{font-weight:900;font-size:clamp(28px,4vw,${fs.h2}px);color:var(--dark);margin-bottom:14px;}
 .sec-h2 em{color:var(--main);font-style:normal;}
-.sec-sub{font-size:17px;color:var(--gray);line-height:1.75;margin-bottom:52px;}
+.sec-sub{font-size:${fs.secSub}px;color:var(--gray);line-height:1.75;margin-bottom:52px;}
 .sec-header{text-align:center;}
 .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;}
 .feat-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:34px 28px;transition:all .25s;position:relative;overflow:hidden;}
 .feat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--main),var(--acc));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
 .feat-card:hover{transform:translateY(-6px);border-color:var(--main);box-shadow:0 14px 40px rgba(25,118,210,.12);}
 .feat-card:hover::after{transform:scaleX(1);}
-.feat-icon{font-size:42px;margin-bottom:16px;display:block;}
-.feat-title{font-weight:700;font-size:20px;color:var(--dark);margin-bottom:10px;}
-.feat-desc{font-size:15px;color:var(--gray);line-height:1.75;}
+.feat-icon{font-size:36px;flex-shrink:0;}
+.feat-header{display:flex;align-items:center;gap:14px;margin-bottom:14px;}
+.feat-title{font-weight:700;font-size:${fs.featTitle}px;color:var(--dark);line-height:1.3;}
+.feat-desc{font-size:${fs.featDesc}px;color:var(--gray);line-height:1.75;}
 .process-wrap{background:var(--light);border-radius:20px;padding:52px 44px;margin-top:52px;}
-.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
-.process-grid::before{content:'';position:absolute;top:28px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--main),var(--acc));}
+.process-grid{display:grid;grid-template-columns:repeat(${C.process.length},1fr);gap:0;position:relative;}
+.process-grid::before{content:'';position:absolute;top:28px;left:${100/(C.process.length*2)}%;right:${100/(C.process.length*2)}%;height:2px;background:linear-gradient(90deg,var(--main),var(--acc));}
 .proc-item{text-align:center;padding:0 12px;}
 .proc-circle{width:58px;height:58px;border-radius:50%;background:var(--main);color:#fff;font-family:'Montserrat',sans-serif;font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;z-index:1;box-shadow:0 4px 18px rgba(25,118,210,.35);}
 .proc-title{font-weight:700;font-size:16px;color:var(--dark);margin-bottom:7px;}
 .proc-desc{font-size:13px;color:var(--gray);line-height:1.65;}
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;}
-.svc-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px 24px;transition:all .22s;}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.svc-grid.svc-4{grid-template-columns:repeat(2,1fr);}
+.svc-grid.svc-6{grid-template-columns:repeat(3,1fr);}
+.svc-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px 24px;transition:all .22s;overflow:hidden;}
 .svc-card:hover{border-color:var(--main);transform:translateY(-5px);box-shadow:0 12px 36px rgba(25,118,210,.1);}
 .svc-card.highlight{border-color:rgba(255,152,0,.4);background:rgba(255,152,0,.02);}
 .svc-card.highlight:hover{border-color:#FF9800;box-shadow:0 12px 36px rgba(255,152,0,.15);}
 .svc-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
 .svc-icon{font-size:32px;flex-shrink:0;}
-.svc-name{font-weight:700;font-size:17px;color:var(--dark);}
+.svc-name{font-weight:700;font-size:${fs.svcName}px;color:var(--dark);}
 .svc-tag{display:inline-block;background:rgba(25,118,210,.08);color:var(--main);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;margin-bottom:12px;}
 .svc-card.highlight .svc-tag{background:rgba(255,152,0,.12);color:#BF360C;}
-.svc-desc{font-size:14px;color:var(--gray);line-height:1.7;}
+.svc-desc{font-size:${fs.svcDesc}px;color:var(--gray);line-height:1.7;}
 .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .gal-item{aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:var(--light);border:2px solid var(--border);}
 .gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
 .gal-item:hover img{transform:scale(1.04);}
-.gal-empty{display:flex;align-items:center;justify-content:center;font-size:32px;color:#ccc;}
+.gal-empty{display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--border);}
 .price-block{margin-bottom:44px;}
-.price-row3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.price-col3{min-width:0;}
-@media(max-width:768px){.price-row3{grid-template-columns:1fr;}}
-.price-section-title{font-weight:800;font-size:18px;margin:0 0 18px;padding:14px 20px;border-radius:12px;display:flex;align-items:center;gap:10px;}
+.price-section-title{font-weight:800;font-size:18px;color:var(--dark);margin:0 0 18px;padding:14px 20px;border-radius:12px;display:flex;align-items:center;gap:10px;}
 .price-section-title.blue{background:rgba(25,118,210,.07);color:var(--main);}
 .price-section-title.green{background:rgba(0,191,165,.07);color:#00897B;}
 .price-section-title.orange{background:rgba(255,152,0,.08);color:#E65100;}
 .price-section-title.teal{background:rgba(0,150,136,.07);color:#00695C;}
 .price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;}
+.price-row3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.price-col3{min-width:0;}
 .price-card{background:#fff;border:2px solid var(--border);border-radius:18px;padding:28px 22px;position:relative;transition:all .22s;}
 .price-card.pop{border-color:var(--main);box-shadow:0 6px 28px rgba(25,118,210,.14);}
 .price-card.pop-green{border-color:#00BFA5;box-shadow:0 6px 28px rgba(0,191,165,.12);}
 .price-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#FF6B35,#FF9800);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:700;white-space:nowrap;}
 .price-name{font-weight:700;font-size:16px;color:var(--dark);margin-bottom:10px;}
-.price-price{font-family:'Montserrat',sans-serif;font-weight:900;font-size:28px;line-height:1;margin-bottom:5px;}
-.price-price.blue{color:var(--main);}
-.price-price.green{color:#00897B;}
-.price-price.orange{color:#E65100;}
-.price-price.teal{color:#00695C;}
+.price-price{font-family:'Montserrat',sans-serif;font-weight:900;font-size:${fs.priceNum}px;line-height:1;margin-bottom:5px;}
+.price-price.blue{color:var(--main);}.price-price.green{color:#00897B;}.price-price.orange{color:#E65100;}.price-price.teal{color:#00695C;}
 .price-unit{font-size:13px;color:var(--gray);margin-bottom:12px;}
 .price-hr{height:1px;background:var(--border);margin:12px 0;}
 .price-desc{font-size:14px;color:var(--gray);line-height:1.65;}
@@ -608,18 +870,18 @@ section{padding:96px 5%;}
 .rv-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px 26px;transition:all .25s;}
 .rv-card:hover{transform:translateY(-5px);box-shadow:0 12px 34px rgba(0,0,0,.08);}
 .rv-stars{color:#FFB300;font-size:18px;margin-bottom:12px;letter-spacing:2px;}
-.rv-text{font-size:15px;color:var(--text);line-height:1.8;margin-bottom:18px;font-style:italic;}
+.rv-text{font-size:${fs.rvText}px;color:var(--text);line-height:1.8;margin-bottom:18px;font-style:italic;}
 .rv-meta{display:flex;align-items:center;gap:12px;}
 .rv-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--main),var(--acc));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0;}
 .rv-name{font-weight:700;font-size:15px;color:var(--dark);}
 .rv-svc{font-size:13px;color:var(--gray);}
 .faq-wrap{max-width:800px;margin:0 auto;}
 .faq-item{border-bottom:1px solid var(--border);overflow:hidden;}
-.faq-q{padding:24px 0;font-weight:700;font-size:16px;color:var(--dark);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;user-select:none;}
+.faq-q{padding:24px 0;font-weight:700;font-size:${fs.faqQ}px;color:var(--dark);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;user-select:none;}
 .faq-q:hover{color:var(--main);}
 .faq-arrow{font-size:20px;transition:transform .25s;flex-shrink:0;color:var(--main);}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
-.faq-a-inner{padding:0 0 22px;font-size:15px;color:var(--gray);line-height:1.85;}
+.faq-a-inner{padding:0 0 22px;font-size:${fs.faqA}px;color:var(--gray);line-height:1.85;}
 .faq-item.open .faq-arrow{transform:rotate(180deg);}
 .faq-item.open .faq-a{max-height:300px;}
 .cta-section{background:linear-gradient(135deg,var(--main) 0%,#0D47A1 100%);padding:96px 5%;text-align:center;}
@@ -646,125 +908,143 @@ footer{background:var(--dark);padding:44px 5%;text-align:center;}
 .f-blog-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(3,199,90,.15);border:1px solid rgba(3,199,90,.35);color:#03C75A;border-radius:9px;padding:9px 18px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:14px;transition:all .2s;}
 .f-blog-btn:hover{background:rgba(3,199,90,.25);}
 .f-copy{font-size:14px;color:rgba(255,255,255,.35);}
-@media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr);}.process-grid{grid-template-columns:repeat(2,1fr);}.process-grid::before{display:none;}.nav-links{display:none;}.gal-grid{grid-template-columns:repeat(2,1fr);}.hero-inner{padding-top:60px;}.sec-h2{font-size:26px;}body{font-size:15px;}}
+@media(max-width:768px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .process-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .process-grid::before{display:none;}
+  .price-row3{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .gal-grid{grid-template-columns:repeat(2,1fr);}
+  .svc-grid,.svc-grid.svc-4,.svc-grid.svc-6{grid-template-columns:1fr!important;}
+  .hero-inner{padding-top:60px;}
+  .sec-h2{font-size:26px!important;}
+  body{font-size:15px;}
+}
 </style>
 </head>
 <body>
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-const C=CONFIG;
-document.getElementById('page-title').textContent=C.brand+' - 정기청소 전문';
-document.getElementById('notice-bar').textContent=C.noticeBar;
-document.getElementById('nav-logo').innerHTML=C.brand+'<span>.</span>';
-document.getElementById('nav-form').href=C.formUrl;
-const nb=document.getElementById('nav-blog-li');
-if(C.blogUrl){nb.style.display='list-item';nb.querySelector('a').href=C.blogUrl;nb.querySelector('a').textContent='📝 '+C.blogLabel;}
-document.getElementById('hero-badge').textContent='🧹 '+C.tagline;
-document.getElementById('hero-title1').textContent=C.heroTitle1;
-document.getElementById('hero-title2').textContent=C.heroTitle2;
-document.getElementById('hero-sub').innerHTML=C.heroSub.replace(/\\n/g,'<br>');
-document.getElementById('btn1').textContent='📋 '+C.btn1;
-document.getElementById('btn1').href=C.formUrl;
-document.getElementById('btn2').textContent='💬 '+C.btn2;
-document.getElementById('btn2').href=C.kakaoUrl;
-const heroEl=document.getElementById('hero');
-if(C.heroImage){heroEl.querySelector('.hero-bg-default')?.remove();heroEl.querySelector('.hero-deco')?.remove();heroEl.querySelector('.hero-deco2')?.remove();const bd=document.createElement('div');bd.className='hero-bg-img';bd.style.backgroundImage="url('"+C.heroImage+"')";const dim=parseFloat(C.heroImgDim||50)/100;heroEl.style.setProperty('--hero-pos',(C.heroImgX||50)+'% '+(C.heroImgY||50)+'%');heroEl.style.setProperty('--hero-size',C.heroImgSize||'cover');heroEl.style.setProperty('--hero-dim',dim);heroEl.insertBefore(bd,heroEl.firstChild);heroEl.classList.add('has-bg');}
-document.getElementById('stats-grid').innerHTML=C.stats.map(s=>'<div class="stat"><div class="stat-num">'+s.num+'</div><div class="stat-label">'+s.label+'</div></div>').join('');
-document.getElementById('feat-grid').innerHTML=C.features.map(f=>'<div class="feat-card"><span class="feat-icon">'+f.icon+'</span><div class="feat-title">'+f.title+'</div><div class="feat-desc">'+f.desc+'</div></div>').join('');
-document.getElementById('process-grid').innerHTML=C.process.map((p,i)=>'<div class="proc-item"><div class="proc-circle">'+(i+1)+'</div><div class="proc-title">'+p.title+'</div><div class="proc-desc">'+p.desc+'</div></div>').join('');
-document.getElementById('svc-grid').innerHTML=C.services.map(s=>'<div class="svc-card'+(s.highlight?' highlight':'')+'"><div class="svc-top"><span class="svc-icon">'+s.icon+'</span><div class="svc-name">'+s.name+'</div></div><div class="svc-tag">'+s.tag+'</div><div class="svc-desc">'+s.desc+'</div></div>').join('');
-document.getElementById('gal-grid').innerHTML=C.galleryImages.map(src=>'<div class="gal-item"><img src="'+src+'" alt="청소 현장" onerror="this.parentElement.classList.add(\\'gal-empty\\');this.style.display=\\'none\\';"></div>').join('');
-document.getElementById('price-title').innerHTML='<em>'+C.priceTitle+'</em>';
-document.getElementById('price-sub').textContent=C.priceSub;
-const mkP=(arr,col,pop)=>arr.map(p=>'<div class="price-card'+(p.popular?' '+pop:'')+'">'+( p.popular?'<div class="price-badge">🔥 가장 인기</div>':'' )+'<div class="price-name">'+p.name+'</div><div class="price-price '+col+'">'+p.price+'</div><div class="price-unit">'+(p.unit||p.minSize||'')+'</div><div class="price-hr"></div><div class="price-desc">'+p.desc+'</div></div>').join('');
-document.getElementById('regular-grid').innerHTML=mkP(C.regularPrices,'blue','pop');
-document.getElementById('deepclean-grid').innerHTML=mkP(C.deepCleanPrices,'green','pop-green');
-document.getElementById('movein-grid').innerHTML=mkP(C.moveinPrices,'orange','');
-document.getElementById('glass-grid').innerHTML=mkP(C.glassPrices,'teal','');
-document.getElementById('price-note').textContent=C.priceNote;
-const st=n=>'★'.repeat(n)+'☆'.repeat(5-n);
-document.getElementById('rv-grid').innerHTML=C.reviews.map(r=>'<div class="rv-card"><div class="rv-stars">'+st(r.stars)+'</div><div class="rv-text">"'+r.text+'"</div><div class="rv-meta"><div class="rv-avatar">'+r.name[0]+'</div><div><div class="rv-name">'+r.name+'</div><div class="rv-svc">'+r.service+'</div></div></div></div>').join('');
-document.getElementById('faq-list').innerHTML=C.faqs.map(f=>'<div class="faq-item" onclick="this.classList.toggle(\\'open\\')"><div class="faq-q">Q. '+f.q+'<span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">'+f.a+'</div></div></div>').join('');
-document.getElementById('cta-phone').textContent=C.phone;
-document.getElementById('cta-hours').textContent=C.hours;
-document.getElementById('cta-btn1').href=C.formUrl;
-document.getElementById('cta-btn1').textContent='📋 '+C.btn1;
-document.getElementById('cta-btn2').href=C.kakaoUrl;
-document.getElementById('cta-btn3').href='tel:'+C.phone.replace(/-/g,'');
-const cb=document.getElementById('cta-blog-wrap');
-if(C.blogUrl){cb.style.display='inline-flex';cb.href=C.blogUrl;cb.textContent='📝 '+C.blogLabel;}
-document.getElementById('float-btn').href=C.kakaoUrl;
-document.getElementById('f-logo').textContent=C.brand;
-document.getElementById('f-copy').textContent=C.footerCopy;
-const fb=document.getElementById('f-blog');
-if(C.blogUrl){fb.style.display='inline-flex';fb.href=C.blogUrl;fb.textContent='📝 '+C.blogLabel+' 보러가기';}
-});
-<\/script>
-<div class="notice-bar" id="notice-bar"></div>
+<div class="notice-bar" id="notice-bar">${C.noticeBar}</div>
 <nav>
-<a class="nav-logo" id="nav-logo" href="#"></a>
-<ul class="nav-links">
-<li><a href="#features" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});return false;">선택 이유</a></li>
-<li><a href="#services" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'});return false;">서비스</a></li>
-<li><a href="#price" onclick="document.getElementById('price').scrollIntoView({behavior:'smooth'});return false;">가격</a></li>
-<li><a href="#reviews" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'});return false;">후기</a></li>
-<li><a href="#faq" onclick="document.getElementById('faq').scrollIntoView({behavior:'smooth'});return false;">FAQ</a></li>
-<li id="nav-blog-li" style="display:none;"><a class="nav-blog" href="#" target="_blank"></a></li>
-</ul>
-<a href="#" id="nav-form" target="_blank" class="nav-cta">무료 견적</a>
+  <a class="nav-logo" id="nav-logo" href="#">${C.brand}<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#features" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});return false;">선택 이유</a></li>
+    <li><a href="#services" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'});return false;">서비스</a></li>
+    <li><a href="#price" onclick="document.getElementById('price').scrollIntoView({behavior:'smooth'});return false;">가격</a></li>
+    <li><a href="#reviews" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'});return false;">후기</a></li>
+    <li><a href="#faq" onclick="document.getElementById('faq').scrollIntoView({behavior:'smooth'});return false;">FAQ</a></li>
+    ${C.blogUrl?`<li><a class="nav-blog" href="${C.blogUrl}" target="_blank">📝 ${C.blogLabel}</a></li>`:''}
+  </ul>
+  <a href="${C.formUrl}" target="_blank" class="nav-cta">무료 견적</a>
 </nav>
-<section class="hero" id="hero"><div class="hero-bg-default"></div><div class="hero-deco"></div><div class="hero-deco2"></div><div class="hero-inner"><div class="hero-badge" id="hero-badge"></div><h1><span id="hero-title1"></span><br><span class="hl" id="hero-title2"></span></h1><p class="hero-sub" id="hero-sub"></p><div class="hero-btns"><a href="#" id="btn1" class="btn-hero btn-main"></a><a href="#" id="btn2" class="btn-hero btn-kakao"></a></div></div></section>
-<div class="stats-bar"><div class="stats-grid" id="stats-grid"></div></div>
-<section id="features"><div class="sec-header"><div class="sec-tag">WHY US</div><h2 class="sec-h2">왜 <em>달려라청소</em>인가요?</h2><p class="sec-sub">고객 만족을 최우선으로, 매번 같은 퀄리티를 약속합니다</p></div><div class="feat-grid" id="feat-grid"></div><div class="process-wrap"><div class="process-grid" id="process-grid"></div></div></section>
-<section id="services" style="background:var(--light);"><div class="sec-header"><div class="sec-tag">SERVICES</div><h2 class="sec-h2">제공 <em>서비스</em></h2><p class="sec-sub">사무실부터 병원, 유리창까지 달려라청소가 다 해결합니다</p></div><div class="svc-grid" id="svc-grid"></div></section>
-<section><div class="sec-header"><div class="sec-tag">GALLERY</div><h2 class="sec-h2">청소 <em>현장</em></h2><p class="sec-sub">직접 확인하세요 — 달라진 공간의 변화</p></div><div class="gal-grid" id="gal-grid"></div></section>
-<section id="price" style="background:var(--light);"><div class="sec-header"><div class="sec-tag">PRICING</div><h2 class="sec-h2" id="price-title"></h2><p class="sec-sub" id="price-sub"></p></div><div class="price-block"><div class="price-section-title blue">🔵 정기청소 요금 (월정액)</div><div class="price-grid" id="regular-grid"></div></div><div class="price-block"><div class="price-row3"><div class="price-col3"><div class="price-section-title green">🟢 대청소 (평당)</div><div class="price-grid" id="deepclean-grid"></div></div><div class="price-col3"><div class="price-section-title orange">🟠 입주청소 (평당)</div><div class="price-grid" id="movein-grid"></div></div><div class="price-col3"><div class="price-section-title teal">🪟 유리창 청소</div><div class="price-grid" id="glass-grid"></div></div></div></div><div class="price-note-box">💡 <span id="price-note"></span></div></section>
-<section id="reviews"><div class="sec-header"><div class="sec-tag">REVIEWS</div><h2 class="sec-h2">고객님들의 <em>생생한 후기</em></h2><p class="sec-sub">실제 이용 고객님의 솔직한 후기입니다</p></div><div class="rv-grid" id="rv-grid"></div></section>
-<section id="faq" style="background:var(--light);"><div class="sec-header"><div class="sec-tag">FAQ</div><h2 class="sec-h2">자주 묻는 <em>질문</em></h2><p class="sec-sub">궁금하신 점은 언제든 카카오로 문의해 주세요!</p></div><div class="faq-wrap" id="faq-list"></div></section>
-<section class="cta-section" id="contact"><h2>지금 바로 무료 견적 받아보세요!</h2><p>빠른 답변 보장 · 견적은 언제나 무료입니다 😊</p><div class="cta-cards"><div class="cta-card"><div class="cta-card-icon">📞</div><div class="cta-card-label">전화 문의</div><div class="cta-card-val" id="cta-phone"></div></div><div class="cta-card"><div class="cta-card-icon">⏰</div><div class="cta-card-label">운영시간</div><div class="cta-card-val" id="cta-hours"></div></div><div class="cta-card"><div class="cta-card-icon">💬</div><div class="cta-card-label">카카오 상담</div><div class="cta-card-val">24시간 접수 가능</div></div></div><div class="cta-btns"><a href="#" id="cta-btn1" class="btn-white"></a><a href="#" id="cta-btn2" class="btn-yellow">💬 카카오 상담</a><a href="#" id="cta-btn3" class="btn-tel">📞 전화 연결</a><a href="#" id="cta-blog-wrap" class="btn-blog-cta" target="_blank" style="display:none;"></a></div></section>
-<footer><div class="f-logo" id="f-logo"></div><div style="margin:12px 0;"><a href="#" id="f-blog" class="f-blog-btn" target="_blank" style="display:none;"></a></div><p class="f-copy" id="f-copy"></p></footer>
-<a href="#" id="float-btn" class="float-btn" title="카카오 상담">💬</a>
-</body>
-</html>`;
-
-function generateIndexHTML() {
-  const C = buildConfig();
-  const configStr = JSON.stringify(C, null, 2);
-  return INDEX_TEMPLATE
-    .replace('__CONFIG__', configStr)
-    .replace('__MAIN__', C.colorMain)
-    .replace('__ACC__', C.colorAcc);
+<section class="hero" id="hero">
+  ${C.heroImage?`<div style="position:absolute;inset:0;background-image:url('${C.heroImage}');background-size:${C.heroImgSize||'cover'};background-position:${C.heroImgX||50}% ${C.heroImgY||50}%"></div><div style="position:absolute;inset:0;background:rgba(10,25,50,${parseFloat(C.heroImgDim||50)/100})"></div>`:'<div class="hero-bg-default"></div><div class="hero-deco"></div><div class="hero-deco2"></div>'}
+  <div class="hero-inner" ${C.heroImage?'style="color:#fff"':''}>
+    <div class="hero-badge" style="${C.heroImage?'background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff':''}">🧹 ${C.tagline}</div>
+    <h1 style="${C.heroImage?'color:#fff':''}">${C.heroTitle1}<br><span class="hl" style="${C.heroImage?'color:#90CAF9':''}">${C.heroTitle2}</span></h1>
+    <p class="hero-sub" style="${C.heroImage?'color:rgba(255,255,255,.85)':''}">${C.heroSub.replace(/\n/g,'<br>')}</p>
+    <div class="hero-btns">
+      <a href="${C.formUrl}" target="_blank" class="btn-hero btn-main">📋 ${C.btn1}</a>
+      <a href="${C.kakaoUrl}" target="_blank" class="btn-hero btn-kakao">💬 ${C.btn2}</a>
+    </div>
+  </div>
+</section>
+<div class="stats-bar"><div class="stats-grid">${C.stats.map(s=>`<div class="stat"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('')}</div></div>
+<section id="features" ${hide('features')}>
+  <div class="sec-header"><div class="sec-tag">WHY US</div><h2 class="sec-h2">왜 <em>${C.brand}</em>인가요?</h2><p class="sec-sub">고객 만족을 최우선으로, 매번 같은 퀄리티를 약속합니다</p></div>
+  <div class="feat-grid">${featHTML}</div>
+  <div class="process-wrap"><div class="process-grid">${C.process.map((p,i)=>`<div class="proc-item"><div class="proc-circle">${i+1}</div><div class="proc-title">${p.title}</div><div class="proc-desc">${p.desc}</div></div>`).join('')}</div></div>
+</section>
+<section id="services" style="background:var(--light);${S.services===false?'display:none':''}" >
+  <div class="sec-header"><div class="sec-tag">SERVICES</div><h2 class="sec-h2">제공 <em>서비스</em></h2><p class="sec-sub">사무실부터 병원, 유리창까지 달려라청소가 다 해결합니다</p></div>
+  <div class="${svcGridClass}">${svcHTML}</div>
+</section>
+<section ${hide('gallery')}>
+  <div class="sec-header"><div class="sec-tag">GALLERY</div><h2 class="sec-h2">청소 <em>현장</em></h2><p class="sec-sub">직접 확인하세요 — 달라진 공간의 변화</p></div>
+  <div class="gal-grid">${galHTML}</div>
+</section>
+<section id="price" style="background:var(--light);${S.price===false?'display:none':''}">
+  <div class="sec-header"><div class="sec-tag">PRICING</div><h2 class="sec-h2"><em>${C.priceTitle}</em></h2><p class="sec-sub">${C.priceSub}</p></div>
+  <div class="price-block"><div class="price-section-title blue">🔵 정기청소 요금 (월정액)</div><div class="price-grid">${mkCards(C.regularPrices,'blue','pop')}</div></div>
+  <div class="price-block"><div class="price-row3">
+    <div class="price-col3"><div class="price-section-title green">🟢 대청소 (평당)</div><div class="price-grid">${mkCards(C.deepCleanPrices,'green','pop-green')}</div></div>
+    <div class="price-col3"><div class="price-section-title orange">🟠 입주청소 (평당)</div><div class="price-grid">${mkCards(C.moveinPrices,'orange','')}</div></div>
+    <div class="price-col3"><div class="price-section-title teal">🪟 유리창 청소</div><div class="price-grid">${mkCards(C.glassPrices,'teal','')}</div></div>
+  </div></div>
+  <div class="price-note-box">💡 ${C.priceNote}</div>
+</section>
+<section id="reviews" ${hide('reviews')}>
+  <div class="sec-header"><div class="sec-tag">REVIEWS</div><h2 class="sec-h2">고객님들의 <em>생생한 후기</em></h2><p class="sec-sub">실제 이용 고객님의 솔직한 후기입니다</p></div>
+  <div class="rv-grid">${C.reviews.map(r=>`<div class="rv-card"><div class="rv-stars">${st(r.stars)}</div><div class="rv-text">"${r.text}"</div><div class="rv-meta"><div class="rv-avatar">${r.name[0]}</div><div><div class="rv-name">${r.name}</div><div class="rv-svc">${r.service}</div></div></div></div>`).join('')}</div>
+</section>
+<section id="faq" style="background:var(--light);${S.faq===false?'display:none':''}">
+  <div class="sec-header"><div class="sec-tag">FAQ</div><h2 class="sec-h2">자주 묻는 <em>질문</em></h2><p class="sec-sub">궁금하신 점은 언제든 카카오로 문의해 주세요!</p></div>
+  <div class="faq-wrap">${C.faqs.map(f=>`<div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q">Q. ${f.q}<span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">${f.a}</div></div></div>`).join('')}</div>
+</section>
+<section class="cta-section" id="contact">
+  <h2>지금 바로 무료 견적 받아보세요!</h2>
+  <p>빠른 답변 보장 · 견적은 언제나 무료입니다 😊</p>
+  <div class="cta-cards">
+    <div class="cta-card"><div class="cta-card-icon">📞</div><div class="cta-card-label">전화 문의</div><div class="cta-card-val">${C.phone}</div></div>
+    <div class="cta-card"><div class="cta-card-icon">⏰</div><div class="cta-card-label">운영시간</div><div class="cta-card-val">${C.hours}</div></div>
+    <div class="cta-card"><div class="cta-card-icon">💬</div><div class="cta-card-label">카카오 상담</div><div class="cta-card-val">24시간 접수 가능</div></div>
+  </div>
+  <div class="cta-btns">
+    <a href="${C.formUrl}" target="_blank" class="btn-white">📋 ${C.btn1}</a>
+    <a href="${C.kakaoUrl}" target="_blank" class="btn-yellow">💬 카카오 상담</a>
+    <a href="tel:${C.phone.replace(/-/g,'')}" class="btn-tel">📞 전화 연결</a>
+    ${C.blogUrl?`<a href="${C.blogUrl}" target="_blank" class="btn-blog-cta">📝 ${C.blogLabel}</a>`:''}
+  </div>
+</section>
+<footer>
+  <div class="f-logo">${C.brand}</div>
+  ${C.blogUrl?`<div style="margin:12px 0"><a href="${C.blogUrl}" target="_blank" class="f-blog-btn">📝 ${C.blogLabel} 보러가기</a></div>`:''}
+  <p class="f-copy">${C.footerCopy}</p>
+</footer>
+<a href="${C.kakaoUrl}" target="_blank" class="float-btn" title="카카오 상담">💬</a>
+</body></html>`;
 }
 
-// ── 미리보기 ──
-let timer;
-function live() { clearTimeout(timer); timer = setTimeout(updatePreview, 200); }
+// ═══════════════════════════
+// 미리보기 / 다운로드
+// ═══════════════════════════
+let ptimer = null;
+let previewReady = false;
+
+function live() { clearTimeout(ptimer); ptimer = setTimeout(updatePreview, 300); }
+
 function updatePreview() {
-  const html = generateIndexHTML();
-  const fr = document.getElementById('iframe');
-  const doc = fr.contentDocument || fr.contentWindow.document;
-  doc.open(); doc.write(html); doc.close();
+  try {
+    const fr = document.getElementById('iframe');
+    if (!previewReady) {
+      fr.srcdoc = generateHTML();
+      fr.onload = () => { previewReady = true; };
+    } else {
+      let savedY = 0;
+      try { savedY = fr.contentWindow.scrollY || 0; } catch(e){}
+      fr.srcdoc = generateHTML();
+      fr.onload = () => {
+        try { fr.contentWindow.scrollTo(0, savedY); } catch(e){}
+      };
+    }
+  } catch(err) { console.error('미리보기 오류:', err); }
 }
-
-// ── 다운로드 ──
 function downloadFile() {
-  const html = generateIndexHTML();
-  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'index.html';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
-  const t = document.getElementById('toast');
-  t.textContent = '✅ index.html 다운로드 완료! 깃허브에 올리세요.';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3500);
+  try {
+    const html = generateHTML();
+    const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='index.html';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    const t=document.getElementById('toast'); t.textContent='✅ index.html 다운로드 완료! 깃허브에 올리세요.'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3500);
+  } catch(err) { alert('오류: '+err.message); }
 }
 
+// ═══════════════════════════
+// 시작
+// ═══════════════════════════
+renderAll();
+renderGalUp();
+renderGalPaths();
 updatePreview();
 </script>
 </body>
