@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>달려라청소 편집기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--b:#1565C0;--g:#00897B;--bg:#0D1A2B;--panel:#0F1C2E;--border:rgba(66,165,245,.18);--txt:#C8E0F4;--sec:#00BFA5;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(90deg,#091525,#162540);border-bottom:2px solid var(--b);height:56px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:10px;}
+.tlogo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:16px;color:#42A5F5;white-space:nowrap;}
+.tlogo em{color:#00E5A0;font-style:normal;}
+.tr{display:flex;gap:8px;align-items:center;flex-shrink:0;}
+.btn{padding:8px 16px;border-radius:8px;font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .18s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.btn-ghost{background:transparent;border:1.5px solid rgba(66,165,245,.4);color:#7FC8F8;}
+.btn-ghost:hover{border-color:#42A5F5;color:#42A5F5;}
+.btn-dl{background:linear-gradient(135deg,#1565C0,#00897B);color:#fff;font-size:14px;padding:10px 22px;border-radius:9px;box-shadow:0 4px 16px rgba(21,101,192,.4);}
+.btn-dl:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(21,101,192,.55);}
+
+/* LAYOUT */
+.wrap{display:flex;flex:1;overflow:hidden;}
+
+/* LEFT */
+.left{width:360px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--border);flex-shrink:0;}
+.tab{flex:1;min-width:0;padding:10px 2px;text-align:center;font-size:11px;font-weight:700;cursor:pointer;color:#4A6A8A;border-bottom:2px solid transparent;transition:all .18s;letter-spacing:-.3px;}
+.tab.on{color:#42A5F5;border-bottom-color:#42A5F5;background:rgba(66,165,245,.06);}
+.tab:hover:not(.on){color:#8AB8D8;}
+.scroll{flex:1;overflow-y:auto;padding:16px;}
+.scroll::-webkit-scrollbar{width:4px;}
+.scroll::-webkit-scrollbar-thumb{background:rgba(66,165,245,.22);border-radius:2px;}
+
+/* FORM ELEMENTS */
+.sec{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--sec);text-transform:uppercase;margin:16px 0 8px;}
+.sec:first-child{margin-top:0;}
+.f{margin-bottom:10px;}
+.f label{display:block;font-size:12px;color:#5A7A9A;margin-bottom:4px;font-weight:600;}
+.f input,.f textarea,.f select{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:7px;color:var(--txt);font-family:'Noto Sans KR',sans-serif;font-size:13px;padding:8px 10px;transition:border-color .18s;resize:vertical;}
+.f input:focus,.f textarea:focus,.f select:focus{outline:none;border-color:#42A5F5;background:rgba(66,165,245,.07);}
+.f textarea{min-height:56px;line-height:1.6;}
+.ce{background:rgba(255,255,255,.03);border:1px solid rgba(66,165,245,.14);border-radius:8px;padding:11px;margin-bottom:9px;}
+.ce .ct{font-size:11px;font-weight:700;color:#42A5F5;margin-bottom:9px;}
+.hr{height:1px;background:rgba(66,165,245,.1);margin:14px 0;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.tc{display:none;}
+.tc.on{display:block;}
+
+/* UPLOAD */
+.upload-box{border:2px dashed rgba(66,165,245,.28);border-radius:9px;padding:14px;text-align:center;cursor:pointer;transition:all .18s;position:relative;overflow:hidden;margin-bottom:9px;}
+.upload-box:hover{border-color:#42A5F5;background:rgba(66,165,245,.05);}
+.upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0;}
+.upload-box .ui{font-size:24px;margin-bottom:5px;}
+.upload-box .ut{font-size:12px;color:#5A7A9A;line-height:1.5;}
+.upload-box img.preview{width:100%;border-radius:6px;margin-top:8px;display:none;max-height:100px;object-fit:cover;}
+.g2-upload{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* NOTE BOX */
+.note{background:rgba(255,193,7,.07);border:1px solid rgba(255,193,7,.25);border-radius:8px;padding:10px 13px;font-size:12px;color:#FFD54F;line-height:1.6;margin-bottom:12px;}
+.note strong{font-weight:700;}
+
+/* RIGHT */
+.right{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.pbar{background:var(--panel);border-bottom:1px solid var(--border);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.pbar-label{font-size:12px;color:#5A7A9A;font-weight:700;letter-spacing:1px;}
+#iframe{flex:1;border:none;background:#fff;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:#00BFA5;color:#003D35;padding:12px 24px;border-radius:11px;font-weight:700;font-size:14px;z-index:9999;transform:translateY(60px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tlogo">🧹 달려라청소 <em>EDITOR</em></div>
+  <div class="tr">
+    <button class="btn btn-ghost" onclick="if(confirm('초기화할까요?'))location.reload()">↺ 초기화</button>
+    <button class="btn btn-ghost" onclick="updatePreview()">▶ 미리보기</button>
+    <button class="btn btn-dl" onclick="downloadFile()">⬇ index.html 다운로드</button>
+  </div>
+</div>
+
+<div class="wrap">
+<div class="left">
+  <div class="tabs">
+    <div class="tab on"  onclick="sw(0)">🏠기본</div>
+    <div class="tab"     onclick="sw(1)">⭐특징</div>
+    <div class="tab"     onclick="sw(2)">🗂서비스</div>
+    <div class="tab"     onclick="sw(3)">💰가격</div>
+    <div class="tab"     onclick="sw(4)">💬후기</div>
+    <div class="tab"     onclick="sw(5)">❓FAQ</div>
+    <div class="tab"     onclick="sw(6)">🖼사진</div>
+    <div class="tab"     onclick="sw(7)">🔗링크</div>
+  </div>
+  <div class="scroll">
+
+  <!-- 0: 기본 -->
+  <div class="tc on" id="tc0">
+    <div class="sec">브랜드 / 연락처</div>
+    <div class="f"><label>업체명</label><input id="brand" value="달려라청소" oninput="live()"></div>
+    <div class="f"><label>태그라인 (히어로 뱃지)</label><input id="tagline" value="정기청소 전문 · 강남·서초·송파 전지역 출동" oninput="live()"></div>
+    <div class="f"><label>전화번호</label><input id="phone" value="010-0000-0000" oninput="live()"></div>
+    <div class="f"><label>운영시간</label><input id="hours" value="매일 09:00~20:00 (점심 12~13시)" oninput="live()"></div>
+    <div class="f"><label>최상단 알림바 문구</label><input id="noticeBar" value="📞 무료견적 전화 010-0000-0000 | 매일 09:00~20:00 운영" oninput="live()"></div>
+    <div class="hr"></div>
+    <div class="sec">히어로 문구</div>
+    <div class="f"><label>메인 제목 첫째줄</label><input id="heroTitle1" value="깨끗함이 달려옵니다" oninput="live()"></div>
+    <div class="f"><label>메인 제목 둘째줄 (파란 강조)</label><input id="heroTitle2" value="빠르고, 꼼꼼하게!" oninput="live()"></div>
+    <div class="f"><label>서브 문구 (줄바꿈 가능)</label><textarea id="heroSub" oninput="live()">사무실·병원·입주청소 전문
+합리적인 가격, 투명한 견적, 숨은 비용 없습니다</textarea></div>
+    <div class="f"><label>버튼1 텍스트</label><input id="btn1" value="무료 견적 받기" oninput="live()"></div>
+    <div class="f"><label>버튼2 텍스트</label><input id="btn2" value="카카오 상담하기" oninput="live()"></div>
+    <div class="hr"></div>
+    <div class="sec">신뢰 숫자 4개</div>
+    <div class="ce"><div class="ct">숫자 1</div><div class="g2"><div class="f"><label>숫자</label><input id="s1n" value="1,200+" oninput="live()"></div><div class="f"><label>설명</label><input id="s1l" value="누적 청소 건수" oninput="live()"></div></div></div>
+    <div class="ce"><div class="ct">숫자 2</div><div class="g2"><div class="f"><label>숫자</label><input id="s2n" value="98%" oninput="live()"></div><div class="f"><label>설명</label><input id="s2l" value="고객 재이용률" oninput="live()"></div></div></div>
+    <div class="ce"><div class="ct">숫자 3</div><div class="g2"><div class="f"><label>숫자</label><input id="s3n" value="4.9★" oninput="live()"></div><div class="f"><label>설명</label><input id="s3l" value="평균 만족도" oninput="live()"></div></div></div>
+    <div class="ce"><div class="ct">숫자 4</div><div class="g2"><div class="f"><label>숫자</label><input id="s4n" value="5년+" oninput="live()"></div><div class="f"><label>설명</label><input id="s4l" value="서비스 경력" oninput="live()"></div></div></div>
+    <div class="hr"></div>
+    <div class="sec">푸터</div>
+    <div class="f"><label>카피라이트</label><input id="footerCopy" value="© 2025 달려라청소. All rights reserved." oninput="live()"></div>
+  </div>
+
+  <!-- 1: 특징 -->
+  <div class="tc" id="tc1">
+    <div class="sec">선택 이유 3가지</div>
+    <div class="ce"><div class="ct">이유 1</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="fi1" value="⚡" oninput="live()"></div><div class="f"><label>제목</label><input id="ft1" value="당일·익일 출동" oninput="live()"></div></div>
+      <div class="f"><label>설명</label><textarea id="fd1" oninput="live()">예약 즉시 배정, 긴급 청소도 빠르게 해결해드려요.</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">이유 2</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="fi2" value="🔍" oninput="live()"></div><div class="f"><label>제목</label><input id="ft2" value="꼼꼼한 품질관리" oninput="live()"></div></div>
+      <div class="f"><label>설명</label><textarea id="fd2" oninput="live()">청소 후 체크리스트 확인, 만족 못하면 재청소 무료.</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">이유 3</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="fi3" value="💰" oninput="live()"></div><div class="f"><label>제목</label><input id="ft3" value="투명한 가격" oninput="live()"></div></div>
+      <div class="f"><label>설명</label><textarea id="fd3" oninput="live()">방문 전 확정 견적, 추가 비용 절대 없습니다.</textarea></div>
+    </div>
+    <div class="hr"></div>
+    <div class="sec">진행 프로세스 4단계</div>
+    <div class="ce"><div class="ct">STEP 1</div><div class="f"><label>제목</label><input id="p1t" value="상담 &amp; 견적" oninput="live()"></div><div class="f"><label>설명</label><input id="p1d" value="카톡·구글폼 접수 → 당일 견적 안내" oninput="live()"></div></div>
+    <div class="ce"><div class="ct">STEP 2</div><div class="f"><label>제목</label><input id="p2t" value="일정 확정" oninput="live()"></div><div class="f"><label>설명</label><input id="p2d" value="원하는 날짜·시간 선택, 전담 매니저 배정" oninput="live()"></div></div>
+    <div class="ce"><div class="ct">STEP 3</div><div class="f"><label>제목</label><input id="p3t" value="청소 진행" oninput="live()"></div><div class="f"><label>설명</label><input id="p3d" value="체크리스트 기반 꼼꼼 청소 진행" oninput="live()"></div></div>
+    <div class="ce"><div class="ct">STEP 4</div><div class="f"><label>제목</label><input id="p4t" value="완료 보고" oninput="live()"></div><div class="f"><label>설명</label><input id="p4d" value="청소 전후 사진 카톡 전송, 만족 확인" oninput="live()"></div></div>
+  </div>
+
+  <!-- 2: 서비스 -->
+  <div class="tc" id="tc2">
+    <div class="sec">서비스 5개</div>
+    <div class="ce"><div class="ct">서비스 1</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="sv1i" value="🏢" oninput="live()"></div><div class="f"><label>이름</label><input id="sv1n" value="사무실 정기청소" oninput="live()"></div></div>
+      <div class="f"><label>태그</label><input id="sv1g" value="주 1~3회 정기계약" oninput="live()"></div>
+      <div class="f"><label>설명</label><textarea id="sv1d" oninput="live()">맞춤형 정기계약으로 항상 쾌적한 사무환경을 유지하세요. 주 1~3회 빈도 선택 가능.</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">서비스 2</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="sv2i" value="🏥" oninput="live()"></div><div class="f"><label>이름</label><input id="sv2n" value="병원 정기청소" oninput="live()"></div></div>
+      <div class="f"><label>태그</label><input id="sv2g" value="의료기관 위생관리" oninput="live()"></div>
+      <div class="f"><label>설명</label><textarea id="sv2d" oninput="live()">병원·의원·치과 등 의료시설 특화 정기청소. 위생 기준에 맞춘 꼼꼼한 관리.</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">서비스 3</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="sv3i" value="✨" oninput="live()"></div><div class="f"><label>이름</label><input id="sv3n" value="사무실 대청소·왁스코팅" oninput="live()"></div></div>
+      <div class="f"><label>태그</label><input id="sv3g" value="바닥 왁스코팅 포함" oninput="live()"></div>
+      <div class="f"><label>설명</label><textarea id="sv3d" oninput="live()">연 1~2회 대청소와 바닥 왁스코팅으로 공간을 새것처럼! 광택 복원 전문.</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">서비스 4</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="sv4i" value="📦" oninput="live()"></div><div class="f"><label>이름</label><input id="sv4n" value="입주청소" oninput="live()"></div></div>
+      <div class="f"><label>태그</label><input id="sv4g" value="입주 전 꼼꼼 청소" oninput="live()"></div>
+      <div class="f"><label>설명</label><textarea id="sv4d" oninput="live()">새 공간 입주 전 구석구석 완벽 청소. 평당 요금제로 투명하게.</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">서비스 5 (강조 카드)</div>
+      <div class="g2"><div class="f"><label>아이콘</label><input id="sv5i" value="🪟" oninput="live()"></div><div class="f"><label>이름</label><input id="sv5n" value="유리창 청소" oninput="live()"></div></div>
+      <div class="f"><label>태그</label><input id="sv5g" value="퓨어워터 고가장비 사용" oninput="live()"></div>
+      <div class="f"><label>설명</label><textarea id="sv5d" oninput="live()">퓨어워터 전문 장비로 줄기 없이 완벽하게! 고층 외창도 안전하게 시공.</textarea></div>
+    </div>
+  </div>
+
+  <!-- 3: 가격 -->
+  <div class="tc" id="tc3">
+    <div class="sec">가격표 기본</div>
+    <div class="f"><label>섹션 제목</label><input id="prTitle" value="합리적인 가격표" oninput="live()"></div>
+    <div class="f"><label>섹션 설명</label><textarea id="prSub" oninput="live()">복잡한 견적 NO! 아래 기준 가격으로 미리 확인하세요. 정확한 견적은 무료로 문의해 주세요.</textarea></div>
+    <div class="hr"></div>
+    <div class="sec">🔵 정기청소 (월정액)</div>
+    <div class="ce"><div class="ct">주 1회 (인기)</div>
+      <div class="f"><label>가격</label><input id="rg1p" value="200,000원" oninput="live()"></div>
+      <div class="f"><label>단위</label><input id="rg1u" value="/ 월 (4회 방문)" oninput="live()"></div>
+      <div class="f"><label>설명</label><input id="rg1d" value="사무실 기준 / 평수·범위에 따라 변동" oninput="live()"></div>
+    </div>
+    <div class="ce"><div class="ct">주 2회</div>
+      <div class="f"><label>가격</label><input id="rg2p" value="문의" oninput="live()"></div>
+      <div class="f"><label>단위</label><input id="rg2u" value="/ 월 (8회 방문)" oninput="live()"></div>
+      <div class="f"><label>설명</label><input id="rg2d" value="맞춤 견적 제공" oninput="live()"></div>
+    </div>
+    <div class="ce"><div class="ct">주 3회</div>
+      <div class="f"><label>가격</label><input id="rg3p" value="문의" oninput="live()"></div>
+      <div class="f"><label>단위</label><input id="rg3u" value="/ 월 (12회 방문)" oninput="live()"></div>
+      <div class="f"><label>설명</label><input id="rg3d" value="맞춤 견적 제공" oninput="live()"></div>
+    </div>
+    <div class="hr"></div>
+    <div class="sec">🟢 대청소 (평당)</div>
+    <div class="ce"><div class="ct">대청소 기본</div>
+      <div class="f"><label>평당 요금</label><input id="dc1p" value="8,000원/평" oninput="live()"></div>
+      <div class="f"><label>최소 평수</label><input id="dc1m" value="최소 10평~" oninput="live()"></div>
+      <div class="f"><label>설명</label><input id="dc1d" value="바닥·벽면·창틀 전체 청소 포함" oninput="live()"></div>
+    </div>
+    <div class="ce"><div class="ct">왁스코팅 추가</div>
+      <div class="f"><label>평당 추가요금</label><input id="dc2p" value="+5,000원/평" oninput="live()"></div>
+      <div class="f"><label>조건</label><input id="dc2m" value="대청소 세트 할인" oninput="live()"></div>
+      <div class="f"><label>설명</label><input id="dc2d" value="바닥 광택 복원" oninput="live()"></div>
+    </div>
+    <div class="hr"></div>
+    <div class="sec">🟠 입주청소 (평당)</div>
+    <div class="ce"><div class="ct">입주청소</div>
+      <div class="f"><label>평당 요금</label><input id="mv1p" value="10,000원/평" oninput="live()"></div>
+      <div class="f"><label>최소 평수</label><input id="mv1m" value="최소 10평~" oninput="live()"></div>
+      <div class="f"><label>설명</label><input id="mv1d" value="전 구역 꼼꼼 청소, 입주 전 완벽 준비" oninput="live()"></div>
+    </div>
+    <div class="hr"></div>
+    <div class="sec">🪟 유리창 청소</div>
+    <div class="ce"><div class="ct">유리창 청소</div>
+      <div class="f"><label>요금</label><input id="gl1p" value="문의" oninput="live()"></div>
+      <div class="f"><label>조건</label><input id="gl1m" value="면적·층수 협의" oninput="live()"></div>
+      <div class="f"><label>설명</label><input id="gl1d" value="퓨어워터 장비 사용, 줄기 없는 완벽 세척" oninput="live()"></div>
+    </div>
+    <div class="hr"></div>
+    <div class="sec">안내 메모</div>
+    <div class="f"><label>가격 하단 안내문</label><textarea id="prNote" oninput="live()">※ 위 요금은 기준 가격이며, 실제 면적·청소 범위·접근성에 따라 달라질 수 있습니다. 정확한 견적은 무료로 문의해 주세요!</textarea></div>
+  </div>
+
+  <!-- 4: 후기 -->
+  <div class="tc" id="tc4">
+    <div class="sec">고객 후기 3개</div>
+    <div class="ce"><div class="ct">후기 1</div>
+      <div class="g2"><div class="f"><label>별점 (1~5)</label><input id="r1s" value="5" type="number" min="1" max="5" oninput="live()"></div><div class="f"><label>이름·지역</label><input id="r1n" value="김○○ · 강남구" oninput="live()"></div></div>
+      <div class="f"><label>이용 서비스</label><input id="r1sv" value="사무실 정기청소" oninput="live()"></div>
+      <div class="f"><label>후기 내용</label><textarea id="r1t" oninput="live()">정말 꼼꼼하게 해주셨어요! 구석구석 깨끗하게 닦아주시고 화장실도 새것 같아졌네요. 다음 달에도 꼭 예약할게요 😊</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">후기 2</div>
+      <div class="g2"><div class="f"><label>별점</label><input id="r2s" value="5" type="number" min="1" max="5" oninput="live()"></div><div class="f"><label>이름·지역</label><input id="r2n" value="이○○ · 서초구" oninput="live()"></div></div>
+      <div class="f"><label>이용 서비스</label><input id="r2sv" value="병원 정기청소" oninput="live()"></div>
+      <div class="f"><label>후기 내용</label><textarea id="r2t" oninput="live()">사무실이 이렇게 깨끗해진 적이 없었어요. 직원들도 다 만족해하고 공기가 달라진 것 같아요. 강력 추천합니다!</textarea></div>
+    </div>
+    <div class="ce"><div class="ct">후기 3</div>
+      <div class="g2"><div class="f"><label>별점</label><input id="r3s" value="5" type="number" min="1" max="5" oninput="live()"></div><div class="f"><label>이름·지역</label><input id="r3n" value="박○○ · 송파구" oninput="live()"></div></div>
+      <div class="f"><label>이용 서비스</label><input id="r3sv" value="입주청소" oninput="live()"></div>
+      <div class="f"><label>후기 내용</label><textarea id="r3t" oninput="live()">입주 전 청소를 부탁드렸는데 정말 깔끔하게 해주셨어요. 가격도 합리적이고 친절하셔서 정기계약 바로 맺었습니다!</textarea></div>
+    </div>
+  </div>
+
+  <!-- 5: FAQ -->
+  <div class="tc" id="tc5">
+    <div class="sec">FAQ 5개</div>
+    <div class="ce"><div class="ct">Q1</div><div class="f"><label>질문</label><input id="q1q" value="청소 도구는 직접 가져오나요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q1a" oninput="live()">네, 전문 청소 장비와 친환경 세제를 모두 지참합니다. 고객님은 별도로 준비하실 필요가 없어요.</textarea></div></div>
+    <div class="ce"><div class="ct">Q2</div><div class="f"><label>질문</label><input id="q2q" value="예약 당일 취소·변경이 가능한가요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q2a" oninput="live()">서비스 24시간 전까지 무료 취소·변경 가능합니다. 당일 취소는 취소 수수료가 발생할 수 있어요.</textarea></div></div>
+    <div class="ce"><div class="ct">Q3</div><div class="f"><label>질문</label><input id="q3q" value="정기계약 시 할인이 되나요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q3a" oninput="live()">정기계약(주 1~3회)을 맺으시면 회당 요금에서 5~15% 할인 혜택을 드립니다.</textarea></div></div>
+    <div class="ce"><div class="ct">Q4</div><div class="f"><label>질문</label><input id="q4q" value="청소 후 만족하지 못하면요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q4a" oninput="live()">청소 완료 후 24시간 이내 불만족 부분 말씀해 주시면 재청소 서비스를 무료로 제공해드립니다.</textarea></div></div>
+    <div class="ce"><div class="ct">Q5</div><div class="f"><label>질문</label><input id="q5q" value="유리창 청소 퓨어워터가 뭔가요?" oninput="live()"></div><div class="f"><label>답변</label><textarea id="q5a" oninput="live()">퓨어워터(순수 정제수) 장비로 세제 없이 물만으로 세척해 줄기·물자국 없이 완벽하게 닦이는 전문 장비입니다.</textarea></div></div>
+  </div>
+
+  <!-- 6: 사진 -->
+  <div class="tc" id="tc6">
+    <div class="note">
+      <strong>📌 사진 사용 방법 (2가지)</strong><br><br>
+      <strong>방법 A — 편집기에서 직접 업로드</strong><br>
+      아래에서 사진 업로드 → index.html 다운로드<br>
+      사진이 코드 안에 포함돼요 (파일 커짐)<br><br>
+      <strong>방법 B — 깃허브 images/ 폴더 (권장)</strong><br>
+      깃허브에 images/ 폴더 만들고 사진 업로드<br>
+      링크 탭에서 파일명만 입력하면 끝!<br>
+      예: hero.jpg → images/hero.jpg
+    </div>
+    <div class="sec">히어로 배경 이미지</div>
+    <div class="upload-box" onclick="document.getElementById('uph').click()">
+      <div class="ui">🖼️</div>
+      <div class="ut">클릭해서 배경 이미지 업로드<br><small>업로드하면 🔗링크 탭의 경로가 무시됩니다</small></div>
+      <input type="file" id="uph" accept="image/*" onchange="upImg('uph','pvh','heroImg')">
+      <img class="preview" id="pvh">
+    </div>
+    <div class="sec">갤러리 (6장)</div>
+    <div class="g2-upload">
+      <div class="upload-box" onclick="document.getElementById('ug1').click()"><div class="ui">📷</div><div class="ut">갤러리 1</div><input type="file" id="ug1" accept="image/*" onchange="upImg('ug1','pv1','g1')"><img class="preview" id="pv1"></div>
+      <div class="upload-box" onclick="document.getElementById('ug2').click()"><div class="ui">📷</div><div class="ut">갤러리 2</div><input type="file" id="ug2" accept="image/*" onchange="upImg('ug2','pv2','g2')"><img class="preview" id="pv2"></div>
+      <div class="upload-box" onclick="document.getElementById('ug3').click()"><div class="ui">📷</div><div class="ut">갤러리 3</div><input type="file" id="ug3" accept="image/*" onchange="upImg('ug3','pv3','g3')"><img class="preview" id="pv3"></div>
+      <div class="upload-box" onclick="document.getElementById('ug4').click()"><div class="ui">📷</div><div class="ut">갤러리 4</div><input type="file" id="ug4" accept="image/*" onchange="upImg('ug4','pv4','g4')"><img class="preview" id="pv4"></div>
+      <div class="upload-box" onclick="document.getElementById('ug5').click()"><div class="ui">📷</div><div class="ut">갤러리 5</div><input type="file" id="ug5" accept="image/*" onchange="upImg('ug5','pv5','g5')"><img class="preview" id="pv5"></div>
+      <div class="upload-box" onclick="document.getElementById('ug6').click()"><div class="ui">📷</div><div class="ut">갤러리 6</div><input type="file" id="ug6" accept="image/*" onchange="upImg('ug6','pv6','g6')"><img class="preview" id="pv6"></div>
+    </div>
+  </div>
+
+  <!-- 7: 링크 & 사진경로 -->
+  <div class="tc" id="tc7">
+    <div class="sec">링크</div>
+    <div class="f"><label>구글폼 URL</label><input id="formUrl" value="https://forms.gle/your-form-id" oninput="live()"></div>
+    <div class="f"><label>카카오 오픈카톡 URL</label><input id="kakaoUrl" value="https://open.kakao.com/o/your-link" oninput="live()"></div>
+    <div class="f"><label>네이버 블로그 URL (없으면 비워두세요)</label><input id="blogUrl" value="https://blog.naver.com/your-id" oninput="live()"></div>
+    <div class="f"><label>블로그 버튼 텍스트</label><input id="blogLabel" value="네이버 블로그" oninput="live()"></div>
+    <div class="hr"></div>
+    <div class="sec">사진 경로 (깃허브 방식)</div>
+    <div class="note">
+      깃허브 저장소에 <strong>images/</strong> 폴더 만들고 사진 올린 뒤<br>파일명을 아래에 입력하세요.<br>
+      예: hero.jpg 올리면 → <strong>images/hero.jpg</strong>
+    </div>
+    <div class="f"><label>히어로 배경 경로</label><input id="heroImagePath" value="images/hero.jpg" oninput="live()" placeholder="없으면 비워두세요"></div>
+    <div class="f"><label>갤러리 1</label><input id="gp1" value="images/gallery1.jpg" oninput="live()"></div>
+    <div class="f"><label>갤러리 2</label><input id="gp2" value="images/gallery2.jpg" oninput="live()"></div>
+    <div class="f"><label>갤러리 3</label><input id="gp3" value="images/gallery3.jpg" oninput="live()"></div>
+    <div class="f"><label>갤러리 4</label><input id="gp4" value="images/gallery4.jpg" oninput="live()"></div>
+    <div class="f"><label>갤러리 5</label><input id="gp5" value="images/gallery5.jpg" oninput="live()"></div>
+    <div class="f"><label>갤러리 6</label><input id="gp6" value="images/gallery6.jpg" oninput="live()"></div>
+    <div class="hr"></div>
+    <div class="sec">컬러</div>
+    <div class="f"><label>포인트 컬러</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="cMain" value="#1976D2" oninput="syncColor('cMain','cMainT');live()" style="width:38px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:2px;background:transparent;">
+        <input id="cMainT" value="#1976D2" oninput="syncColorText('cMainT','cMain')" style="flex:1">
+      </div>
+    </div>
+    <div class="f"><label>강조 컬러</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="cAcc" value="#00BFA5" oninput="syncColor('cAcc','cAccT');live()" style="width:38px;height:34px;border:none;border-radius:6px;cursor:pointer;padding:2px;background:transparent;">
+        <input id="cAccT" value="#00BFA5" oninput="syncColorText('cAccT','cAcc')" style="flex:1">
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /scroll -->
+</div><!-- /left -->
+
+<div class="right">
+  <div class="pbar">
+    <span class="pbar-label">👁 실시간 미리보기</span>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="font-size:12px;color:#5A7A9A">수정하면 바로 반영돼요</span>
+      <button class="btn btn-dl" onclick="downloadFile()">⬇ index.html 다운로드</button>
+    </div>
+  </div>
+  <iframe id="iframe"></iframe>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── 이미지 저장소 ──
+const imgs = {heroImg:null,g1:null,g2:null,g3:null,g4:null,g5:null,g6:null};
+
+function upImg(inputId, previewId, key) {
+  const file = document.getElementById(inputId).files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = e => {
+    imgs[key] = e.target.result;
+    const p = document.getElementById(previewId);
+    p.src = e.target.result;
+    p.style.display = 'block';
+    live();
+  };
+  r.readAsDataURL(file);
+}
+
+// ── 탭 ──
+function sw(n) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('on', i===n));
+  document.querySelectorAll('.tc').forEach((t,i) => t.classList.toggle('on', i===n));
+}
+
+// ── 컬러 동기화 ──
+function syncColor(colorId, textId) { document.getElementById(textId).value = document.getElementById(colorId).value; }
+function syncColorText(textId, colorId) { const v = document.getElementById(textId).value; if(/^#[0-9a-fA-F]{6}$/.test(v)){document.getElementById(colorId).value=v; live();} }
+
+// ── 값 읽기 ──
+function g(id) { return (document.getElementById(id)?.value || '').trim(); }
+function gn(id) { return Math.min(5,Math.max(1,parseInt(g(id))||5)); }
+
+// ── CONFIG 생성 ──
+function buildConfig() {
+  const heroImgFinal = imgs.heroImg || (g('heroImagePath') ? g('heroImagePath') : '');
+  const galImgs = [1,2,3,4,5,6].map(i => imgs[`g${i}`] || g(`gp${i}`) || `images/gallery${i}.jpg`);
+
+  return {
+    brand: g('brand')||'달려라청소',
+    tagline: g('tagline'),
+    phone: g('phone'),
+    hours: g('hours'),
+    noticeBar: g('noticeBar'),
+    formUrl: g('formUrl'),
+    kakaoUrl: g('kakaoUrl'),
+    blogUrl: g('blogUrl'),
+    blogLabel: g('blogLabel')||'네이버 블로그',
+    heroTitle1: g('heroTitle1'),
+    heroTitle2: g('heroTitle2'),
+    heroSub: g('heroSub'),
+    btn1: g('btn1'),
+    btn2: g('btn2'),
+    stats: [
+      {num:g('s1n'),label:g('s1l')},
+      {num:g('s2n'),label:g('s2l')},
+      {num:g('s3n'),label:g('s3l')},
+      {num:g('s4n'),label:g('s4l')},
+    ],
+    features: [
+      {icon:g('fi1'),title:g('ft1'),desc:g('fd1')},
+      {icon:g('fi2'),title:g('ft2'),desc:g('fd2')},
+      {icon:g('fi3'),title:g('ft3'),desc:g('fd3')},
+    ],
+    process: [
+      {title:g('p1t'),desc:g('p1d')},
+      {title:g('p2t'),desc:g('p2d')},
+      {title:g('p3t'),desc:g('p3d')},
+      {title:g('p4t'),desc:g('p4d')},
+    ],
+    services: [
+      {icon:g('sv1i'),name:g('sv1n'),tag:g('sv1g'),desc:g('sv1d'),highlight:false},
+      {icon:g('sv2i'),name:g('sv2n'),tag:g('sv2g'),desc:g('sv2d'),highlight:false},
+      {icon:g('sv3i'),name:g('sv3n'),tag:g('sv3g'),desc:g('sv3d'),highlight:false},
+      {icon:g('sv4i'),name:g('sv4n'),tag:g('sv4g'),desc:g('sv4d'),highlight:false},
+      {icon:g('sv5i'),name:g('sv5n'),tag:g('sv5g'),desc:g('sv5d'),highlight:true},
+    ],
+    priceTitle: g('prTitle'),
+    priceSub: g('prSub'),
+    regularPrices: [
+      {name:'주 1회 정기청소',price:g('rg1p'),unit:g('rg1u'),desc:g('rg1d'),popular:true},
+      {name:'주 2회 정기청소',price:g('rg2p'),unit:g('rg2u'),desc:g('rg2d'),popular:false},
+      {name:'주 3회 정기청소',price:g('rg3p'),unit:g('rg3u'),desc:g('rg3d'),popular:false},
+    ],
+    deepCleanPrices: [
+      {name:'대청소 기본',price:g('dc1p'),minSize:g('dc1m'),desc:g('dc1d'),popular:false},
+      {name:'왁스코팅 추가',price:g('dc2p'),minSize:g('dc2m'),desc:g('dc2d'),popular:false},
+    ],
+    moveinPrices: [
+      {name:'입주청소',price:g('mv1p'),minSize:g('mv1m'),desc:g('mv1d'),popular:false},
+    ],
+    glassPrices: [
+      {name:'유리창 청소',price:g('gl1p'),minSize:g('gl1m'),desc:g('gl1d'),popular:false},
+    ],
+    priceNote: g('prNote'),
+    reviews: [
+      {stars:gn('r1s'),name:g('r1n'),service:g('r1sv'),text:g('r1t')},
+      {stars:gn('r2s'),name:g('r2n'),service:g('r2sv'),text:g('r2t')},
+      {stars:gn('r3s'),name:g('r3n'),service:g('r3sv'),text:g('r3t')},
+    ],
+    faqs: [
+      {q:g('q1q'),a:g('q1a')},
+      {q:g('q2q'),a:g('q2a')},
+      {q:g('q3q'),a:g('q3a')},
+      {q:g('q4q'),a:g('q4a')},
+      {q:g('q5q'),a:g('q5a')},
+    ],
+    heroImage: heroImgFinal,
+    galleryImages: galImgs,
+    footerCopy: g('footerCopy'),
+    colorMain: g('cMain')||'#1976D2',
+    colorAcc: g('cAcc')||'#00BFA5',
+  };
+}
+
+// ── INDEX.HTML 생성 ──
+// (index.html 파일의 내용을 그대로 가져와서 CONFIG 부분만 교체)
+const INDEX_TEMPLATE = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">달려라청소 - 정기청소 전문</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+<script>
+const CONFIG = __CONFIG__;
+<\/script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--main:__MAIN__;--acc:__ACC__;--dark:#0D1F35;--text:#1A2B3C;--gray:#5A7080;--light:#F4F8FC;--border:#DDE8F0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--text);background:#fff;overflow-x:hidden;font-size:16px;line-height:1.7;}
+.notice-bar{background:var(--dark);color:rgba(255,255,255,.92);text-align:center;padding:11px 20px;font-size:15px;font-weight:500;}
+nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px;box-shadow:0 1px 10px rgba(0,0,0,.07);}
+.nav-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:22px;color:var(--main);text-decoration:none;}
+.nav-logo span{color:var(--acc);}
+.nav-links{display:flex;gap:30px;list-style:none;}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:15px;font-weight:600;transition:color .2s;}
+.nav-links a:hover{color:var(--main);}
+.nav-blog{color:#03C75A!important;font-weight:700!important;}
+.nav-cta{background:var(--main);color:#fff;padding:11px 24px;border-radius:8px;font-weight:700;font-size:15px;text-decoration:none;transition:all .2s;white-space:nowrap;}
+.nav-cta:hover{background:var(--acc);}
+.hero{min-height:88vh;display:flex;align-items:center;position:relative;overflow:hidden;}
+.hero-bg-default{position:absolute;inset:0;background:linear-gradient(135deg,#EBF4FF 0%,#F0FAF7 60%,#E8F5FF 100%);}
+.hero-bg-img{position:absolute;inset:0;background-size:cover;background-position:center;}
+.hero-bg-img::after{content:'';position:absolute;inset:0;background:rgba(10,25,50,.5);}
+.hero-deco{position:absolute;right:-60px;top:-60px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(25,118,210,.08),transparent 70%);}
+.hero-deco2{position:absolute;left:-80px;bottom:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(0,191,165,.07),transparent 70%);}
+.hero-inner{position:relative;z-index:2;max-width:700px;padding:80px 5%;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(25,118,210,.12);border:1px solid rgba(25,118,210,.25);border-radius:30px;padding:8px 20px;font-size:14px;font-weight:700;color:var(--main);margin-bottom:28px;}
+.has-bg .hero-badge{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff;}
+.hero h1{font-weight:900;font-size:clamp(38px,5.5vw,66px);line-height:1.18;margin-bottom:22px;color:var(--dark);}
+.has-bg .hero h1{color:#fff;}
+.hl{color:var(--main);}
+.has-bg .hl{color:#90CAF9;}
+.hero-sub{font-size:18px;color:var(--gray);line-height:1.85;margin-bottom:38px;}
+.has-bg .hero-sub{color:rgba(255,255,255,.85);}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-hero{display:inline-flex;align-items:center;gap:9px;padding:16px 32px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;transition:all .22s;}
+.btn-main{background:var(--main);color:#fff;box-shadow:0 6px 24px rgba(25,118,210,.3);}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(25,118,210,.45);}
+.btn-kakao{background:#FEE500;color:#3C1E1E;}
+.btn-kakao:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(254,229,0,.4);}
+.stats-bar{background:var(--dark);padding:36px 5%;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.1);border-radius:14px;overflow:hidden;max-width:900px;margin:0 auto;}
+.stat{background:rgba(255,255,255,.06);padding:30px 20px;text-align:center;}
+.stat-num{font-family:'Montserrat',sans-serif;font-weight:900;font-size:34px;color:#fff;line-height:1;}
+.stat-label{font-size:14px;color:rgba(255,255,255,.6);margin-top:8px;}
+section{padding:96px 5%;}
+.sec-tag{display:inline-block;background:rgba(25,118,210,.08);border:1px solid rgba(25,118,210,.2);color:var(--main);border-radius:30px;padding:7px 20px;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;}
+.sec-h2{font-weight:900;font-size:clamp(28px,4vw,44px);color:var(--dark);margin-bottom:14px;}
+.sec-h2 em{color:var(--main);font-style:normal;}
+.sec-sub{font-size:17px;color:var(--gray);line-height:1.75;margin-bottom:52px;}
+.sec-header{text-align:center;}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;}
+.feat-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:34px 28px;transition:all .25s;position:relative;overflow:hidden;}
+.feat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--main),var(--acc));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.feat-card:hover{transform:translateY(-6px);border-color:var(--main);box-shadow:0 14px 40px rgba(25,118,210,.12);}
+.feat-card:hover::after{transform:scaleX(1);}
+.feat-icon{font-size:42px;margin-bottom:16px;display:block;}
+.feat-title{font-weight:700;font-size:20px;color:var(--dark);margin-bottom:10px;}
+.feat-desc{font-size:15px;color:var(--gray);line-height:1.75;}
+.process-wrap{background:var(--light);border-radius:20px;padding:52px 44px;margin-top:52px;}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.process-grid::before{content:'';position:absolute;top:28px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--main),var(--acc));}
+.proc-item{text-align:center;padding:0 12px;}
+.proc-circle{width:58px;height:58px;border-radius:50%;background:var(--main);color:#fff;font-family:'Montserrat',sans-serif;font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;position:relative;z-index:1;box-shadow:0 4px 18px rgba(25,118,210,.35);}
+.proc-title{font-weight:700;font-size:16px;color:var(--dark);margin-bottom:7px;}
+.proc-desc{font-size:13px;color:var(--gray);line-height:1.65;}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;}
+.svc-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px 24px;transition:all .22s;}
+.svc-card:hover{border-color:var(--main);transform:translateY(-5px);box-shadow:0 12px 36px rgba(25,118,210,.1);}
+.svc-card.highlight{border-color:rgba(255,152,0,.4);background:rgba(255,152,0,.02);}
+.svc-card.highlight:hover{border-color:#FF9800;box-shadow:0 12px 36px rgba(255,152,0,.15);}
+.svc-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.svc-icon{font-size:32px;flex-shrink:0;}
+.svc-name{font-weight:700;font-size:17px;color:var(--dark);}
+.svc-tag{display:inline-block;background:rgba(25,118,210,.08);color:var(--main);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:700;margin-bottom:12px;}
+.svc-card.highlight .svc-tag{background:rgba(255,152,0,.12);color:#BF360C;}
+.svc-desc{font-size:14px;color:var(--gray);line-height:1.7;}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.gal-item{aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:var(--light);border:2px solid var(--border);}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
+.gal-item:hover img{transform:scale(1.04);}
+.gal-empty{display:flex;align-items:center;justify-content:center;font-size:32px;color:#ccc;}
+.price-block{margin-bottom:44px;}
+.price-row3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.price-col3{min-width:0;}
+@media(max-width:768px){.price-row3{grid-template-columns:1fr;}}
+.price-section-title{font-weight:800;font-size:18px;margin:0 0 18px;padding:14px 20px;border-radius:12px;display:flex;align-items:center;gap:10px;}
+.price-section-title.blue{background:rgba(25,118,210,.07);color:var(--main);}
+.price-section-title.green{background:rgba(0,191,165,.07);color:#00897B;}
+.price-section-title.orange{background:rgba(255,152,0,.08);color:#E65100;}
+.price-section-title.teal{background:rgba(0,150,136,.07);color:#00695C;}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;}
+.price-card{background:#fff;border:2px solid var(--border);border-radius:18px;padding:28px 22px;position:relative;transition:all .22s;}
+.price-card.pop{border-color:var(--main);box-shadow:0 6px 28px rgba(25,118,210,.14);}
+.price-card.pop-green{border-color:#00BFA5;box-shadow:0 6px 28px rgba(0,191,165,.12);}
+.price-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#FF6B35,#FF9800);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:700;white-space:nowrap;}
+.price-name{font-weight:700;font-size:16px;color:var(--dark);margin-bottom:10px;}
+.price-price{font-family:'Montserrat',sans-serif;font-weight:900;font-size:28px;line-height:1;margin-bottom:5px;}
+.price-price.blue{color:var(--main);}
+.price-price.green{color:#00897B;}
+.price-price.orange{color:#E65100;}
+.price-price.teal{color:#00695C;}
+.price-unit{font-size:13px;color:var(--gray);margin-bottom:12px;}
+.price-hr{height:1px;background:var(--border);margin:12px 0;}
+.price-desc{font-size:14px;color:var(--gray);line-height:1.65;}
+.price-note-box{background:var(--light);border:1px solid var(--border);border-radius:14px;padding:20px 26px;margin-top:32px;font-size:15px;color:var(--gray);line-height:1.75;}
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;}
+.rv-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:28px 26px;transition:all .25s;}
+.rv-card:hover{transform:translateY(-5px);box-shadow:0 12px 34px rgba(0,0,0,.08);}
+.rv-stars{color:#FFB300;font-size:18px;margin-bottom:12px;letter-spacing:2px;}
+.rv-text{font-size:15px;color:var(--text);line-height:1.8;margin-bottom:18px;font-style:italic;}
+.rv-meta{display:flex;align-items:center;gap:12px;}
+.rv-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--main),var(--acc));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0;}
+.rv-name{font-weight:700;font-size:15px;color:var(--dark);}
+.rv-svc{font-size:13px;color:var(--gray);}
+.faq-wrap{max-width:800px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden;}
+.faq-q{padding:24px 0;font-weight:700;font-size:16px;color:var(--dark);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;user-select:none;}
+.faq-q:hover{color:var(--main);}
+.faq-arrow{font-size:20px;transition:transform .25s;flex-shrink:0;color:var(--main);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.faq-a-inner{padding:0 0 22px;font-size:15px;color:var(--gray);line-height:1.85;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-item.open .faq-a{max-height:300px;}
+.cta-section{background:linear-gradient(135deg,var(--main) 0%,#0D47A1 100%);padding:96px 5%;text-align:center;}
+.cta-section h2{font-weight:900;font-size:clamp(28px,4vw,46px);color:#fff;margin-bottom:16px;}
+.cta-section p{font-size:18px;color:rgba(255,255,255,.82);margin-bottom:44px;}
+.cta-cards{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:44px;}
+.cta-card{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:24px 32px;min-width:180px;text-align:center;}
+.cta-card-icon{font-size:32px;margin-bottom:10px;}
+.cta-card-label{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:5px;}
+.cta-card-val{font-weight:700;font-size:17px;color:#fff;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-white{background:#fff;color:var(--main);padding:15px 30px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;transition:all .22s;}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2);}
+.btn-yellow{background:#FEE500;color:#3C1E1E;padding:15px 30px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;transition:all .22s;}
+.btn-yellow:hover{transform:translateY(-2px);}
+.btn-tel{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:15px 30px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;transition:all .22s;}
+.btn-tel:hover{background:rgba(255,255,255,.25);}
+.btn-blog-cta{background:#03C75A;color:#fff;padding:15px 30px;border-radius:10px;font-weight:700;font-size:16px;text-decoration:none;transition:all .22s;}
+.btn-blog-cta:hover{background:#00a846;transform:translateY(-2px);}
+.float-btn{position:fixed;bottom:32px;right:32px;z-index:999;background:#FEE500;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;box-shadow:0 6px 24px rgba(0,0,0,.2);animation:pulse 2.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 6px 24px rgba(0,0,0,.2);}50%{box-shadow:0 12px 38px rgba(254,229,0,.6);transform:scale(1.07);}}
+footer{background:var(--dark);padding:44px 5%;text-align:center;}
+.f-logo{font-family:'Montserrat',sans-serif;font-weight:900;font-size:20px;color:#42A5F5;margin-bottom:12px;}
+.f-blog-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(3,199,90,.15);border:1px solid rgba(3,199,90,.35);color:#03C75A;border-radius:9px;padding:9px 18px;font-size:14px;font-weight:700;text-decoration:none;margin-bottom:14px;transition:all .2s;}
+.f-blog-btn:hover{background:rgba(3,199,90,.25);}
+.f-copy{font-size:14px;color:rgba(255,255,255,.35);}
+@media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr);}.process-grid{grid-template-columns:repeat(2,1fr);}.process-grid::before{display:none;}.nav-links{display:none;}.gal-grid{grid-template-columns:repeat(2,1fr);}.hero-inner{padding-top:60px;}.sec-h2{font-size:26px;}body{font-size:15px;}}
+</style>
+</head>
+<body>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+const C=CONFIG;
+document.getElementById('page-title').textContent=C.brand+' - 정기청소 전문';
+document.getElementById('notice-bar').textContent=C.noticeBar;
+document.getElementById('nav-logo').innerHTML=C.brand+'<span>.</span>';
+document.getElementById('nav-form').href=C.formUrl;
+const nb=document.getElementById('nav-blog-li');
+if(C.blogUrl){nb.style.display='list-item';nb.querySelector('a').href=C.blogUrl;nb.querySelector('a').textContent='📝 '+C.blogLabel;}
+document.getElementById('hero-badge').textContent='🧹 '+C.tagline;
+document.getElementById('hero-title1').textContent=C.heroTitle1;
+document.getElementById('hero-title2').textContent=C.heroTitle2;
+document.getElementById('hero-sub').innerHTML=C.heroSub.replace(/\\n/g,'<br>');
+document.getElementById('btn1').textContent='📋 '+C.btn1;
+document.getElementById('btn1').href=C.formUrl;
+document.getElementById('btn2').textContent='💬 '+C.btn2;
+document.getElementById('btn2').href=C.kakaoUrl;
+const heroEl=document.getElementById('hero');
+if(C.heroImage){heroEl.querySelector('.hero-bg-default')?.remove();heroEl.querySelector('.hero-deco')?.remove();heroEl.querySelector('.hero-deco2')?.remove();const bd=document.createElement('div');bd.className='hero-bg-img';bd.style.backgroundImage="url('"+C.heroImage+"')";heroEl.insertBefore(bd,heroEl.firstChild);heroEl.classList.add('has-bg');}
+document.getElementById('stats-grid').innerHTML=C.stats.map(s=>'<div class="stat"><div class="stat-num">'+s.num+'</div><div class="stat-label">'+s.label+'</div></div>').join('');
+document.getElementById('feat-grid').innerHTML=C.features.map(f=>'<div class="feat-card"><span class="feat-icon">'+f.icon+'</span><div class="feat-title">'+f.title+'</div><div class="feat-desc">'+f.desc+'</div></div>').join('');
+document.getElementById('process-grid').innerHTML=C.process.map((p,i)=>'<div class="proc-item"><div class="proc-circle">'+(i+1)+'</div><div class="proc-title">'+p.title+'</div><div class="proc-desc">'+p.desc+'</div></div>').join('');
+document.getElementById('svc-grid').innerHTML=C.services.map(s=>'<div class="svc-card'+(s.highlight?' highlight':'')+'"><div class="svc-top"><span class="svc-icon">'+s.icon+'</span><div class="svc-name">'+s.name+'</div></div><div class="svc-tag">'+s.tag+'</div><div class="svc-desc">'+s.desc+'</div></div>').join('');
+document.getElementById('gal-grid').innerHTML=C.galleryImages.map(src=>'<div class="gal-item"><img src="'+src+'" alt="청소 현장" onerror="this.parentElement.classList.add(\\'gal-empty\\');this.style.display=\\'none\\';"></div>').join('');
+document.getElementById('price-title').innerHTML='<em>'+C.priceTitle+'</em>';
+document.getElementById('price-sub').textContent=C.priceSub;
+const mkP=(arr,col,pop)=>arr.map(p=>'<div class="price-card'+(p.popular?' '+pop:'')+'">'+( p.popular?'<div class="price-badge">🔥 가장 인기</div>':'' )+'<div class="price-name">'+p.name+'</div><div class="price-price '+col+'">'+p.price+'</div><div class="price-unit">'+(p.unit||p.minSize||'')+'</div><div class="price-hr"></div><div class="price-desc">'+p.desc+'</div></div>').join('');
+document.getElementById('regular-grid').innerHTML=mkP(C.regularPrices,'blue','pop');
+document.getElementById('deepclean-grid').innerHTML=mkP(C.deepCleanPrices,'green','pop-green');
+document.getElementById('movein-grid').innerHTML=mkP(C.moveinPrices,'orange','');
+document.getElementById('glass-grid').innerHTML=mkP(C.glassPrices,'teal','');
+document.getElementById('price-note').textContent=C.priceNote;
+const st=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+document.getElementById('rv-grid').innerHTML=C.reviews.map(r=>'<div class="rv-card"><div class="rv-stars">'+st(r.stars)+'</div><div class="rv-text">"'+r.text+'"</div><div class="rv-meta"><div class="rv-avatar">'+r.name[0]+'</div><div><div class="rv-name">'+r.name+'</div><div class="rv-svc">'+r.service+'</div></div></div></div>').join('');
+document.getElementById('faq-list').innerHTML=C.faqs.map(f=>'<div class="faq-item" onclick="this.classList.toggle(\\'open\\')"><div class="faq-q">Q. '+f.q+'<span class="faq-arrow">▾</span></div><div class="faq-a"><div class="faq-a-inner">'+f.a+'</div></div></div>').join('');
+document.getElementById('cta-phone').textContent=C.phone;
+document.getElementById('cta-hours').textContent=C.hours;
+document.getElementById('cta-btn1').href=C.formUrl;
+document.getElementById('cta-btn1').textContent='📋 '+C.btn1;
+document.getElementById('cta-btn2').href=C.kakaoUrl;
+document.getElementById('cta-btn3').href='tel:'+C.phone.replace(/-/g,'');
+const cb=document.getElementById('cta-blog-wrap');
+if(C.blogUrl){cb.style.display='inline-flex';cb.href=C.blogUrl;cb.textContent='📝 '+C.blogLabel;}
+document.getElementById('float-btn').href=C.kakaoUrl;
+document.getElementById('f-logo').textContent=C.brand;
+document.getElementById('f-copy').textContent=C.footerCopy;
+const fb=document.getElementById('f-blog');
+if(C.blogUrl){fb.style.display='inline-flex';fb.href=C.blogUrl;fb.textContent='📝 '+C.blogLabel+' 보러가기';}
+});
+<\/script>
+<div class="notice-bar" id="notice-bar"></div>
+<nav>
+<a class="nav-logo" id="nav-logo" href="#"></a>
+<ul class="nav-links">
+<li><a href="#features" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});return false;">선택 이유</a></li>
+<li><a href="#services" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'});return false;">서비스</a></li>
+<li><a href="#price" onclick="document.getElementById('price').scrollIntoView({behavior:'smooth'});return false;">가격</a></li>
+<li><a href="#reviews" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'});return false;">후기</a></li>
+<li><a href="#faq" onclick="document.getElementById('faq').scrollIntoView({behavior:'smooth'});return false;">FAQ</a></li>
+<li id="nav-blog-li" style="display:none;"><a class="nav-blog" href="#" target="_blank"></a></li>
+</ul>
+<a href="#" id="nav-form" target="_blank" class="nav-cta">무료 견적</a>
+</nav>
+<section class="hero" id="hero"><div class="hero-bg-default"></div><div class="hero-deco"></div><div class="hero-deco2"></div><div class="hero-inner"><div class="hero-badge" id="hero-badge"></div><h1><span id="hero-title1"></span><br><span class="hl" id="hero-title2"></span></h1><p class="hero-sub" id="hero-sub"></p><div class="hero-btns"><a href="#" id="btn1" class="btn-hero btn-main"></a><a href="#" id="btn2" class="btn-hero btn-kakao"></a></div></div></section>
+<div class="stats-bar"><div class="stats-grid" id="stats-grid"></div></div>
+<section id="features"><div class="sec-header"><div class="sec-tag">WHY US</div><h2 class="sec-h2">왜 <em>달려라청소</em>인가요?</h2><p class="sec-sub">고객 만족을 최우선으로, 매번 같은 퀄리티를 약속합니다</p></div><div class="feat-grid" id="feat-grid"></div><div class="process-wrap"><div class="process-grid" id="process-grid"></div></div></section>
+<section id="services" style="background:var(--light);"><div class="sec-header"><div class="sec-tag">SERVICES</div><h2 class="sec-h2">제공 <em>서비스</em></h2><p class="sec-sub">사무실부터 병원, 유리창까지 달려라청소가 다 해결합니다</p></div><div class="svc-grid" id="svc-grid"></div></section>
+<section><div class="sec-header"><div class="sec-tag">GALLERY</div><h2 class="sec-h2">청소 <em>현장</em></h2><p class="sec-sub">직접 확인하세요 — 달라진 공간의 변화</p></div><div class="gal-grid" id="gal-grid"></div></section>
+<section id="price" style="background:var(--light);"><div class="sec-header"><div class="sec-tag">PRICING</div><h2 class="sec-h2" id="price-title"></h2><p class="sec-sub" id="price-sub"></p></div><div class="price-block"><div class="price-section-title blue">🔵 정기청소 요금 (월정액)</div><div class="price-grid" id="regular-grid"></div></div><div class="price-block"><div class="price-row3"><div class="price-col3"><div class="price-section-title green">🟢 대청소 (평당)</div><div class="price-grid" id="deepclean-grid"></div></div><div class="price-col3"><div class="price-section-title orange">🟠 입주청소 (평당)</div><div class="price-grid" id="movein-grid"></div></div><div class="price-col3"><div class="price-section-title teal">🪟 유리창 청소</div><div class="price-grid" id="glass-grid"></div></div></div></div><div class="price-note-box">💡 <span id="price-note"></span></div></section>
+<section id="reviews"><div class="sec-header"><div class="sec-tag">REVIEWS</div><h2 class="sec-h2">고객님들의 <em>생생한 후기</em></h2><p class="sec-sub">실제 이용 고객님의 솔직한 후기입니다</p></div><div class="rv-grid" id="rv-grid"></div></section>
+<section id="faq" style="background:var(--light);"><div class="sec-header"><div class="sec-tag">FAQ</div><h2 class="sec-h2">자주 묻는 <em>질문</em></h2><p class="sec-sub">궁금하신 점은 언제든 카카오로 문의해 주세요!</p></div><div class="faq-wrap" id="faq-list"></div></section>
+<section class="cta-section" id="contact"><h2>지금 바로 무료 견적 받아보세요!</h2><p>빠른 답변 보장 · 견적은 언제나 무료입니다 😊</p><div class="cta-cards"><div class="cta-card"><div class="cta-card-icon">📞</div><div class="cta-card-label">전화 문의</div><div class="cta-card-val" id="cta-phone"></div></div><div class="cta-card"><div class="cta-card-icon">⏰</div><div class="cta-card-label">운영시간</div><div class="cta-card-val" id="cta-hours"></div></div><div class="cta-card"><div class="cta-card-icon">💬</div><div class="cta-card-label">카카오 상담</div><div class="cta-card-val">24시간 접수 가능</div></div></div><div class="cta-btns"><a href="#" id="cta-btn1" class="btn-white"></a><a href="#" id="cta-btn2" class="btn-yellow">💬 카카오 상담</a><a href="#" id="cta-btn3" class="btn-tel">📞 전화 연결</a><a href="#" id="cta-blog-wrap" class="btn-blog-cta" target="_blank" style="display:none;"></a></div></section>
+<footer><div class="f-logo" id="f-logo"></div><div style="margin:12px 0;"><a href="#" id="f-blog" class="f-blog-btn" target="_blank" style="display:none;"></a></div><p class="f-copy" id="f-copy"></p></footer>
+<a href="#" id="float-btn" class="float-btn" title="카카오 상담">💬</a>
+</body>
+</html>`;
+
+function generateIndexHTML() {
+  const C = buildConfig();
+  const configStr = JSON.stringify(C, null, 2);
+  return INDEX_TEMPLATE
+    .replace('__CONFIG__', configStr)
+    .replace('__MAIN__', C.colorMain)
+    .replace('__ACC__', C.colorAcc);
+}
+
+// ── 미리보기 ──
+let timer;
+function live() { clearTimeout(timer); timer = setTimeout(updatePreview, 200); }
+function updatePreview() {
+  const html = generateIndexHTML();
+  const fr = document.getElementById('iframe');
+  const doc = fr.contentDocument || fr.contentWindow.document;
+  doc.open(); doc.write(html); doc.close();
+}
+
+// ── 다운로드 ──
+function downloadFile() {
+  const html = generateIndexHTML();
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'index.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  const t = document.getElementById('toast');
+  t.textContent = '✅ index.html 다운로드 완료! 깃허브에 올리세요.';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+updatePreview();
+</script>
+</body>
+</html>
