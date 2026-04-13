@@ -77,12 +77,29 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;heigh
 .mini-up .mi{font-size:15px;}
 .mini-up .mt{font-size:10px;color:#5A7A9A;}
 .mini-up img.mpv{width:100%;max-height:55px;object-fit:cover;border-radius:4px;margin-top:4px;display:none;}
+.acc-btn{background:linear-gradient(135deg,rgba(0,191,165,.18),rgba(66,165,245,.18));border:1.5px solid rgba(0,191,165,.45);color:#00E5A0;font-size:12px;padding:7px 11px;border-radius:7px;display:flex;align-items:center;gap:5px;cursor:pointer;font-weight:700;max-width:170px;transition:all .18s;}
+.acc-btn:hover{border-color:#00E5A0;background:linear-gradient(135deg,rgba(0,191,165,.28),rgba(66,165,245,.25));}
+.acc-btn #acc-name{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.modal-bg{position:fixed;inset:0;background:rgba(0,10,20,.78);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9998;}
+.modal-bg.show{display:flex;}
+.modal-box{background:#0D1A2B;border:1px solid rgba(66,165,245,.35);border-radius:14px;padding:22px;width:460px;max-width:92vw;max-height:86vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.6);}
+.modal-h{font-size:16px;font-weight:900;color:#42A5F5;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.modal-sub{font-size:11px;color:#5A7A9A;margin-bottom:14px;line-height:1.6;}
+.acc-row{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);border:1px solid rgba(66,165,245,.13);border-radius:8px;padding:10px 12px;margin-bottom:7px;transition:all .18s;}
+.acc-row.active{border-color:#00BFA5;background:rgba(0,191,165,.08);}
+.acc-row-name{flex:1;font-size:13px;color:#C8E0F4;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+.acc-row.active .acc-row-name::before{content:'● ';color:#00BFA5;}
+.acc-row button{background:rgba(66,165,245,.12);border:1px solid rgba(66,165,245,.28);color:#7FC8F8;border-radius:5px;padding:4px 8px;font-size:10.5px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.acc-row button:hover{background:rgba(66,165,245,.22);border-color:#42A5F5;color:#42A5F5;}
+.acc-row button.danger{color:#EF5350;border-color:rgba(239,83,80,.3);background:rgba(239,83,80,.08);}
+.acc-row button.danger:hover{background:rgba(239,83,80,.18);border-color:#EF5350;}
 </style>
 </head>
 <body>
 <div class="topbar">
   <div class="tlogo">🧹 달려라청소 <em>EDITOR PRO</em></div>
   <div class="tr">
+    <button class="btn acc-btn" onclick="openAccountPanel()" title="계정 전환 / 관리"><span>👤</span><span id="acc-name">기본</span><span>▾</span></button>
     <button class="btn btn-ghost" onclick="if(confirm('초기화할까요?'))location.reload()">↺ 초기화</button>
     <button class="btn btn-ghost" onclick="updatePreview()">▶ 새로고침</button>
     <button class="btn btn-copy" onclick="copyCode()">📋 코드 복사</button>
@@ -394,6 +411,18 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;heigh
 </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<div class="modal-bg" id="accModal" onclick="if(event.target===this)closeAccountPanel()">
+  <div class="modal-box">
+    <div class="modal-h">👤 계정 관리</div>
+    <div class="modal-sub">여러 사이트 설정을 저장하고 언제든 전환할 수 있어요.<br>데이터는 이 브라우저에만 저장됩니다 (다른 기기에서는 보이지 않아요).</div>
+    <div id="accList"></div>
+    <button class="add-btn" onclick="newAccount()">+ 새 계정 만들기 (현재 설정 복사)</button>
+    <div style="text-align:right;margin-top:14px">
+      <button class="btn btn-ghost" onclick="closeAccountPanel()">닫기</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ═══════════════════════════
@@ -1338,8 +1367,13 @@ window.addEventListener('scroll',()=>{
 // ═══════════════════════════
 let ptimer = null;
 let currentBlobUrl = null;
+let restoring = false;
 
-function live() { clearTimeout(ptimer); ptimer = setTimeout(updatePreview, 300); }
+function live() {
+  if (restoring) return;
+  clearTimeout(ptimer);
+  ptimer = setTimeout(() => { updatePreview(); saveCurrent(); }, 300);
+}
 
 function updatePreview() {
   try {
@@ -1402,11 +1436,216 @@ function downloadFile() {
 }
 
 // ═══════════════════════════
+// 계정 (다중 사이트 설정) 관리
+// ═══════════════════════════
+const ACC_KEY = 'runclean_editor_accounts_v1';
+let ACC = { active: null, list: {} };
+
+function genId() { return 'a_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function captureState() {
+  const form = {};
+  document.querySelectorAll('.left input, .left textarea, .left select').forEach(el => {
+    if (!el.id || el.type === 'file') return;
+    form[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+  return {
+    form,
+    stats:   JSON.parse(JSON.stringify(stats)),
+    feats:   JSON.parse(JSON.stringify(feats)),
+    procs:   JSON.parse(JSON.stringify(procs)),
+    svcs:    JSON.parse(JSON.stringify(svcs)),
+    reviews: JSON.parse(JSON.stringify(reviews)),
+    faqs:    JSON.parse(JSON.stringify(faqs)),
+    secState:JSON.parse(JSON.stringify(secState)),
+    imgs:    Object.assign({}, imgs)
+  };
+}
+
+function refreshAllPreviews() {
+  const map = { hero: 'pvh' };
+  for (let i = 1; i <= 6; i++) map['gal' + i] = 'pvg' + i;
+  feats.forEach((_, i) => { map['fImg' + i] = 'pfImg' + i; });
+  svcs.forEach((_, i) => { map['sImg' + i] = 'psImg' + i; });
+  Object.entries(map).forEach(([key, pid]) => {
+    const p = document.getElementById(pid);
+    if (!p) return;
+    if (imgs[key]) { p.src = imgs[key]; p.style.display = 'block'; }
+    else { p.src = ''; p.style.display = 'none'; }
+  });
+}
+
+function restoreState(snap) {
+  if (!snap) return;
+  restoring = true;
+  try {
+    const repl = (arr, src) => { arr.length = 0; (src || []).forEach(x => arr.push(Object.assign({}, x))); };
+    repl(stats,   snap.stats);
+    repl(feats,   snap.feats);
+    repl(procs,   snap.procs);
+    repl(svcs,    snap.svcs);
+    repl(reviews, snap.reviews);
+    repl(faqs,    snap.faqs);
+    Object.keys(secState).forEach(k => {
+      if (snap.secState && snap.secState[k]) secState[k].shown = !!snap.secState[k].shown;
+    });
+    Object.keys(imgs).forEach(k => delete imgs[k]);
+    Object.assign(imgs, snap.imgs || {});
+    // Re-render dynamic editor lists so newly-keyed inputs exist before assigning values
+    renderAll();
+    const form = snap.form || {};
+    Object.entries(form).forEach(([id, v]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.type === 'checkbox') el.checked = !!v;
+      else el.value = v;
+      try { el.dispatchEvent(new Event('input',  { bubbles: true })); } catch(e){}
+      try { el.dispatchEvent(new Event('change', { bubbles: true })); } catch(e){}
+    });
+    refreshAllPreviews();
+  } finally {
+    restoring = false;
+  }
+  updatePreview();
+}
+
+function loadAccounts() {
+  try {
+    const raw = localStorage.getItem(ACC_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.list) ACC = parsed;
+    }
+  } catch(e) { console.warn('계정 로드 실패', e); }
+}
+
+function persistAccounts() {
+  try {
+    localStorage.setItem(ACC_KEY, JSON.stringify(ACC));
+    return true;
+  } catch(e) {
+    showToast('⚠ 저장 실패: 브라우저 저장 용량 초과 (사진이 너무 많을 수 있어요)');
+    return false;
+  }
+}
+
+function saveCurrent() {
+  if (!ACC.active || !ACC.list[ACC.active]) return;
+  ACC.list[ACC.active].data = captureState();
+  persistAccounts();
+}
+
+function updateAccNameLabel() {
+  const el = document.getElementById('acc-name');
+  if (!el) return;
+  const a = ACC.list[ACC.active];
+  el.textContent = a ? a.name : '기본';
+}
+
+function initAccounts() {
+  loadAccounts();
+  if (!ACC.active || !ACC.list[ACC.active]) {
+    const id = genId();
+    ACC = { active: id, list: { [id]: { name: '기본', data: captureState() } } };
+    persistAccounts();
+  } else {
+    restoreState(ACC.list[ACC.active].data);
+  }
+  updateAccNameLabel();
+}
+
+function openAccountPanel() {
+  renderAccountList();
+  document.getElementById('accModal').classList.add('show');
+}
+function closeAccountPanel() {
+  document.getElementById('accModal').classList.remove('show');
+}
+
+function escAttr(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function renderAccountList() {
+  const list = document.getElementById('accList');
+  const entries = Object.entries(ACC.list);
+  if (!entries.length) { list.innerHTML = '<div class="modal-sub">저장된 계정이 없습니다.</div>'; return; }
+  list.innerHTML = entries.map(([id, a]) => {
+    const isActive = id === ACC.active;
+    return `<div class="acc-row ${isActive?'active':''}">
+      <div class="acc-row-name" title="${escAttr(a.name)}">${escAttr(a.name)}</div>
+      ${isActive?'<span style="font-size:10px;color:#00BFA5;font-weight:700">현재</span>':`<button onclick="switchAccount('${id}')">전환</button>`}
+      <button onclick="renameAccount('${id}')">이름</button>
+      <button onclick="duplicateAccount('${id}')">복제</button>
+      <button class="danger" onclick="deleteAccount('${id}')">삭제</button>
+    </div>`;
+  }).join('');
+}
+
+function switchAccount(id) {
+  if (!ACC.list[id] || id === ACC.active) return;
+  saveCurrent();
+  ACC.active = id;
+  persistAccounts();
+  restoreState(ACC.list[id].data);
+  updateAccNameLabel();
+  renderAccountList();
+  showToast('✅ "' + ACC.list[id].name + '" 계정으로 전환했어요');
+}
+
+function newAccount() {
+  const name = prompt('새 계정 이름을 입력하세요\n(현재 설정이 그대로 복사돼서 새 계정으로 만들어져요)', '새 사이트');
+  if (name === null) return;
+  saveCurrent();
+  const id = genId();
+  ACC.list[id] = { name: name.trim() || '새 계정', data: captureState() };
+  ACC.active = id;
+  persistAccounts();
+  updateAccNameLabel();
+  renderAccountList();
+  showToast('🆕 "' + ACC.list[id].name + '" 계정을 만들었어요');
+}
+
+function renameAccount(id) {
+  const a = ACC.list[id]; if (!a) return;
+  const name = prompt('계정 이름 변경', a.name);
+  if (name === null) return;
+  a.name = name.trim() || a.name;
+  persistAccounts();
+  updateAccNameLabel();
+  renderAccountList();
+}
+
+function duplicateAccount(id) {
+  const a = ACC.list[id]; if (!a) return;
+  if (id === ACC.active) saveCurrent();
+  const nid = genId();
+  ACC.list[nid] = { name: a.name + ' (복사본)', data: JSON.parse(JSON.stringify(ACC.list[id].data)) };
+  persistAccounts();
+  renderAccountList();
+  showToast('📄 "' + ACC.list[nid].name + '" 복제 완료');
+}
+
+function deleteAccount(id) {
+  const a = ACC.list[id]; if (!a) return;
+  if (Object.keys(ACC.list).length <= 1) { alert('마지막 계정은 삭제할 수 없어요.'); return; }
+  if (!confirm('"' + a.name + '" 계정을 삭제할까요? 되돌릴 수 없습니다.')) return;
+  delete ACC.list[id];
+  if (ACC.active === id) {
+    ACC.active = Object.keys(ACC.list)[0];
+    restoreState(ACC.list[ACC.active].data);
+  }
+  persistAccounts();
+  updateAccNameLabel();
+  renderAccountList();
+  showToast('🗑 "' + a.name + '" 삭제됨');
+}
+
+// ═══════════════════════════
 // 시작
 // ═══════════════════════════
 renderAll();
 renderGalUp();
 renderGalPaths();
+initAccounts();
 updatePreview();
 </script>
 </body>
