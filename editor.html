@@ -418,9 +418,11 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#fff;heigh
     <div class="modal-sub">여러 사이트 설정을 저장하고 언제든 전환할 수 있어요.<br>데이터는 이 브라우저에만 저장됩니다 (다른 기기에서는 보이지 않아요).</div>
     <div id="accList"></div>
     <button class="add-btn" onclick="newAccount()">+ 새 계정 만들기 (현재 설정 복사)</button>
-    <div style="text-align:right;margin-top:14px">
+    <div style="display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:14px">
+      <button class="btn btn-ghost" onclick="importAccountClick()" title="JSON 파일에서 계정 가져오기">📥 파일에서 가져오기</button>
       <button class="btn btn-ghost" onclick="closeAccountPanel()">닫기</button>
     </div>
+    <input type="file" id="accImportFile" accept="application/json,.json" style="display:none" onchange="importAccountFile(this)">
   </div>
 </div>
 
@@ -1463,15 +1465,24 @@ function captureState() {
 }
 
 function refreshAllPreviews() {
-  const map = { hero: 'pvh' };
-  for (let i = 1; i <= 6; i++) map['gal' + i] = 'pvg' + i;
-  feats.forEach((_, i) => { map['fImg' + i] = 'pfImg' + i; });
-  svcs.forEach((_, i) => { map['sImg' + i] = 'psImg' + i; });
-  Object.entries(map).forEach(([key, pid]) => {
+  const map = [{ key: 'hero', pid: 'pvh', iid: 'uph' }];
+  for (let i = 1; i <= 6; i++) map.push({ key: 'gal' + i, pid: 'pvg' + i, iid: 'ug' + i });
+  feats.forEach((_, i) => map.push({ key: 'fImg' + i, pid: 'pfImg' + i, iid: 'ufi' + i }));
+  svcs.forEach((_, i)  => map.push({ key: 'sImg' + i, pid: 'psImg' + i, iid: 'usi' + i }));
+  map.forEach(({ key, pid, iid }) => {
     const p = document.getElementById(pid);
     if (!p) return;
-    if (imgs[key]) { p.src = imgs[key]; p.style.display = 'block'; }
-    else { p.src = ''; p.style.display = 'none'; }
+    // Always remove any stale delete button
+    const oldBtn = document.getElementById('delbtn_' + pid);
+    if (oldBtn) oldBtn.remove();
+    if (imgs[key]) {
+      p.src = imgs[key];
+      p.style.display = 'block';
+      showDelBtn(pid, key, iid);
+    } else {
+      p.src = '';
+      p.style.display = 'none';
+    }
   });
 }
 
@@ -1572,9 +1583,10 @@ function renderAccountList() {
     const isActive = id === ACC.active;
     return `<div class="acc-row ${isActive?'active':''}">
       <div class="acc-row-name" title="${escAttr(a.name)}">${escAttr(a.name)}</div>
-      ${isActive?'<span style="font-size:10px;color:#00BFA5;font-weight:700">현재</span>':`<button onclick="switchAccount('${id}')">전환</button>`}
+      ${isActive?'<span style="font-size:10px;color:#00BFA5;font-weight:700;padding:0 4px">현재</span>':`<button onclick="switchAccount('${id}')">전환</button>`}
       <button onclick="renameAccount('${id}')">이름</button>
       <button onclick="duplicateAccount('${id}')">복제</button>
+      <button onclick="exportAccount('${id}')" title="JSON 파일로 내보내기">💾</button>
       <button class="danger" onclick="deleteAccount('${id}')">삭제</button>
     </div>`;
   }).join('');
@@ -1638,6 +1650,63 @@ function deleteAccount(id) {
   renderAccountList();
   showToast('🗑 "' + a.name + '" 삭제됨');
 }
+
+function exportAccount(id) {
+  const a = ACC.list[id]; if (!a) return;
+  if (id === ACC.active) saveCurrent();
+  try {
+    const payload = { _type: 'runclean_account', version: 1, name: a.name, data: ACC.list[id].data };
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const safe = a.name.replace(/[\\/:*?"<>|]/g, '_');
+    link.href = url; link.download = 'runclean-' + safe + '.json';
+    document.body.appendChild(link); link.click(); document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast('💾 "' + a.name + '" 내보내기 완료');
+  } catch(e) {
+    alert('내보내기 실패: ' + e.message);
+  }
+}
+
+function importAccountClick() {
+  document.getElementById('accImportFile').click();
+}
+
+function importAccountFile(input) {
+  const f = input.files && input.files[0];
+  input.value = '';
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed || parsed._type !== 'runclean_account' || !parsed.data) {
+        alert('올바른 계정 파일이 아닙니다.');
+        return;
+      }
+      const id = genId();
+      const baseName = (parsed.name || '가져온 계정').trim() || '가져온 계정';
+      let name = baseName;
+      const used = new Set(Object.values(ACC.list).map(x => x.name));
+      let n = 2;
+      while (used.has(name)) { name = baseName + ' (' + n + ')'; n++; }
+      ACC.list[id] = { name, data: parsed.data };
+      persistAccounts();
+      renderAccountList();
+      showToast('📥 "' + name + '" 가져오기 완료');
+    } catch(err) {
+      alert('가져오기 실패: ' + err.message);
+    }
+  };
+  r.readAsText(f);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('accModal').classList.contains('show')) {
+    closeAccountPanel();
+  }
+});
 
 // ═══════════════════════════
 // 시작
